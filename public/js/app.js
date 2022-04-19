@@ -22388,18 +22388,6 @@ __webpack_require__.r(__webpack_exports__);
         inputAttributes: {
           'accept': 'all/*'
         }
-      }).then(function (file) {
-        if (file.isConfirmed) {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-            Swal.fire({
-              title: 'Tugas telah dikumpulkan'
-            });
-          };
-
-          reader.readAsDataURL(file);
-        }
       });
     }
   }
@@ -49050,12 +49038,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Module_vue_vue_type_template_id_36a22755__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Module.vue?vue&type=template&id=36a22755 */ "./resources/js/Pages/Module.vue?vue&type=template&id=36a22755");
-/* harmony import */ var _var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_Laravel_wppl_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 const script = {}
 
 ;
-const __exports__ = /*#__PURE__*/(0,_var_www_html_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(script, [['render',_Module_vue_vue_type_template_id_36a22755__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Module.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_Laravel_wppl_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_1__["default"])(script, [['render',_Module_vue_vue_type_template_id_36a22755__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Module.vue"]])
 /* hot reload */
 if (false) {}
 
