@@ -70,18 +70,7 @@ export default {
           inputAttributes: {
             'accept': 'all/*'
           }
-        }).then((file) => {
-            if (file.isConfirmed) {
-                const reader = new FileReader()
-                reader.onload = (e) => {
-                    Swal.fire({
-                    title: 'Tugas telah dikumpulkan',
-                    })
-                }
-                reader.readAsDataURL(file)
-            }
-        }
-        )
+        })
     },
   },
 };
