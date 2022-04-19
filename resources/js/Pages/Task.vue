@@ -2,7 +2,7 @@
     <div class="max-w-screen min-h-screen">
         <div class="container mx-auto">
             <div class="m-8">
-                <h2 class="text-xl">Tugas Nama Mata Pelajaran</h2>
+                <h2 class="text-xl font-bold">Tugas Nama Mata Pelajaran</h2>
                 <div class="mt-8">
                     <div
                         class="
@@ -23,7 +23,7 @@
                                 p-6
                             "
                         >
-                            <h2 class="text-lg">Tugas latihan</h2>
+                            <h2 class="text-lg font-bold">Tugas latihan</h2>
                             <hr class="my-2 border border-green-500" />
                             <div class="flex flex-row items-end justify-between mt-12">
                                 <div class="">
@@ -34,7 +34,8 @@
                                         Senin, 23 Februari 2020
                                     </h3>
                                 </div>
-                                <div
+                                <button
+                                    @click="showModal"
                                     class="
                                         btn
                                         bg-yellow-300
@@ -43,10 +44,12 @@
                                         uppercase
                                         rounded-lg
                                         h-fit
+                                        shadow-lg
+                                        text-xs
                                     "
                                 >
-                                    Submit
-                                </div>
+                                    kumpulkan
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -55,3 +58,55 @@
         </div>
     </div>
 </template>
+<script>
+export default {
+  methods: {
+    showModal() {
+      
+      this.$swal({
+          width: '20rem',
+          title: 'Pilih File',
+          input: 'file',
+          inputAttributes: {
+            'accept': 'all/*'
+          }
+        }).then((file) => {
+            if (file.isConfirmed) {
+                const reader = new FileReader()
+                reader.onload = (e) => {
+                    Swal.fire({
+                    title: 'Tugas telah dikumpulkan',
+                    })
+                }
+                reader.readAsDataURL(file)
+            }
+        }
+        )
+    },
+  },
+};
+    // function showModal() {
+    //   (async () => {
+
+    //     const { value: file } = await Swal.fire({
+    //       width: '20rem',
+    //       title: 'Pilih File',
+    //       input: 'file',
+    //       inputAttributes: {
+    //         'accept': 'all/*'
+    //       }
+    //     })
+
+    //     if (file) {
+    //       const reader = new FileReader()
+    //       reader.onload = (e) => {
+    //         Swal.fire({
+    //           title: 'Tugas telah dikumpulkan',
+    //         })
+    //       }
+    //       reader.readAsDataURL(file)
+    //     }
+
+    //   })
+    // }
+  </script>
