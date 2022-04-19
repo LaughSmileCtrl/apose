@@ -27,6 +27,9 @@ Route::get('/register2', function () {
     return view('register');
 });
 
+Route::get('/task', function() {
+    return Inertia::render('Task');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
