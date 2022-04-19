@@ -35,6 +35,10 @@ Route::get('/listmapel', function() {
     return view('listmapel');
 });
 
+Route::get('/module', function() {
+    return Inertia::render('Module');
+});
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
