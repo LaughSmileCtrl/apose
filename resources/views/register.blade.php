@@ -41,8 +41,8 @@
               <hr class="border" />
             </div>
             <button type="submit" class="w-full py-2 rounded-full bg-green-600 text-gray-100 focus:outline-none">
-              <a href="#" class="text text-white hover:text-gray-200">Daftar</a></button>
-            <p class="text text-center">Sudah punya akun? <a href="#" class="text-green-400 hover:text-green-500 mb-4">Masuk</a></p>
+              <a href="/login2" class="text text-white hover:text-gray-200">Daftar</a></button>
+            <p class="text text-center">Sudah punya akun? <a href="/login2" class="text-green-400 hover:text-green-500 mb-4">Masuk</a></p>
             <br /><br />
           </div>
         </div>

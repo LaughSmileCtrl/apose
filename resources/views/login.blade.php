@@ -39,8 +39,8 @@
             </div>
             <a href="#" class="text-xs text-green-400 hover:text-green-500 text-right mb-4">Lupa Sandi?</a>
             <button type="submit" class="w-full py-2 rounded-full bg-green-600 text-gray-100 focus:outline-none">
-              <a href="#" class="text text-white hover:text-gray-200">Masuk</a></button>
-            <p class="text text-center">Belum punya akun? <a href="#" class="text-green-400 hover:text-green-500 mb-4">Daftar</a></p>
+              <a href="/dashboard" class="text text-white hover:text-gray-200">Masuk</a></button>
+            <p class="text text-center">Belum punya akun? <a href="/register2" class="text-green-400 hover:text-green-500 mb-4">Daftar</a></p>
             <br /><br />
           </div>
         </div>
