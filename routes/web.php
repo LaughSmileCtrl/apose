@@ -16,15 +16,15 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    // return Inertia::render('Welcome');
 });
 
 Route::get('/login2', function () {
-    return view('login');
+    return Inertia::render('Login');
 });
 
 Route::get('/register2', function () {
-    return view('register');
+    return Inertia::render('Register');
 });
 
 Route::get('/task', function() {
