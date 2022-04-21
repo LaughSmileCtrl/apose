@@ -31,6 +31,10 @@ Route::get('/task', function() {
     return Inertia::render('Task');
 });
 
+Route::get('/listmapel', function() {
+    return view('listmapel');
+});
+
 Route::get('/module', function() {
     return Inertia::render('Module');
 });
@@ -40,3 +44,4 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+
