@@ -34,7 +34,7 @@
                     >
                         <h2 class="text-center text-4xl">Login</h2>
                         <div class="mt-16 grid grid-cols-1 gap-8">
-                            <div v-if="hasErrors">
+                            <div v-if="hasError">
                                 <div class="font-medium text-red-600">
                                     Whoops! Terjadi kesalahan.
                                 </div>
@@ -47,7 +47,7 @@
                                     "
                                 >
                                     <li
-                                        v-for="(error, key) in errors"
+                                        v-for="(error, key) in form.errors"
                                         :key="key"
                                     >
                                         {{ error }}
@@ -80,7 +80,7 @@
                                         type="text"
                                         class="w-full border-0 p-3 outline-none"
                                         placeholder="Email *"
-                                        v-model="email"
+                                        v-model="form.email"
                                     />
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                         "
                                         class="w-full border-0 p-3 outline-none"
                                         placeholder="Password *"
-                                        v-model="password"
+                                        v-model="form.password"
                                     />
                                     <svg
                                         @click="passwordToggle"
@@ -169,9 +169,10 @@
                         </div>
                         <div class="mx-auto mt-24 grid w-fit grid-cols-1 gap-6">
                             <button
+                                @click="submit"
                                 class="
                                     rounded-full
-                                    bg-[#7796C3]
+                                    bg-blue-500
                                     hover:bg-blue-400
                                     active:bg-blue-400
                                     py-3
@@ -216,10 +217,15 @@ export default {
             this.passwordVisible = !this.passwordVisible;
         },
         submit() {
-            form.post(route("login"), {
+            this.form.post(route("login"), {
                 onFinish: () => form.reset("password"),
             });
         },
     },
+    computed: {
+        hasError() {
+            return Object.keys(this.form.errors).length > 0
+        }
+    }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <swiper
+  <swiper   
     :slidesPerView="'auto'"
     :spaceBetween="30"
     :pagination="{

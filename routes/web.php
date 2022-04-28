@@ -31,9 +31,9 @@ Route::get('/task', function() {
     return Inertia::render('Task');
 });
 
-Route::get('/listmapel', function() {
-    return view('listmapel');
-});
+Route::get('/list-study', function() {
+    return Inertia::render('ListStudy');
+})->name('list-study');
 
 Route::get('/module', function() {
     return Inertia::render('Module');
@@ -42,6 +42,10 @@ Route::get('/module', function() {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/detail-study', function() {
+    return Inertia::render('DetailStudy');
+})->name('detail-study');
 
 require __DIR__.'/auth.php';
 
