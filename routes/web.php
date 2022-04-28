@@ -16,20 +16,24 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome');
+    // return Inertia::render('Welcome');
 });
 
 Route::get('/login2', function () {
-    return view('login');
+    return Inertia::render('Login');
 });
 
 Route::get('/register2', function () {
-    return view('register');
+    return Inertia::render('Register');
 });
 
 Route::get('/task', function() {
     return Inertia::render('Task');
 });
+
+Route::get('/list-study', function() {
+    return Inertia::render('ListStudy');
+})->name('list-study');
 
 Route::get('/module', function() {
     return Inertia::render('Module');
@@ -39,4 +43,9 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/detail-study', function() {
+    return Inertia::render('DetailStudy');
+})->name('detail-study');
+
 require __DIR__.'/auth.php';
+
