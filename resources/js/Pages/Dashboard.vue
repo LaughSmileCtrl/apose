@@ -1,7 +1,7 @@
 <template>
-    <SideNav v-if="showSideNav" @close="toggleSideNav" />
     <div class="max-w-screen min-h-screen">
         <div class="container mx-auto">
+            <SideNav v-if="showSideNav" @close="toggleSideNav" />
             <div
                 class="
                     w-full
@@ -41,7 +41,7 @@
                             />
                         </div>
                         <div class="flex flex-col ml-3">
-                            <h2 class="text-sm">
+                            <h2 class="text-md font-semibold">
                                 {{ $page.props.auth.user.name }}
                             </h2>
                             <h3 class="text-xs">SMA Negeri 1 Sumenep</h3>
@@ -188,7 +188,7 @@ export default {
     methods: {
         toggleSideNav() {
             this.showSideNav = !this.showSideNav;
-        }
+        },
     }
 };
 </script>

@@ -638,6 +638,31 @@ select {
     padding-left: 6rem;
   }
 }
+.btn {
+  background-color: #9ca3af;
+  border-radius: 0.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.btn.btn-primary {
+  background-color: #60a5fa;
+  color: #fff;
+}
+.btn.btn-secondary {
+  background-color: #facc15;
+  color: #1d4ed8;
+}
+.btn.btn-sm {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  font-size: 0.875rem;
+}
 .fixed {
   position: fixed;
 }
@@ -646,10 +671,6 @@ select {
 }
 .relative {
   position: relative;
-}
-.sticky {
-  position: -webkit-sticky;
-  position: sticky;
 }
 .inset-0 {
   top: 0px;
@@ -660,10 +681,6 @@ select {
 .inset-y-0 {
   top: 0px;
   bottom: 0px;
-}
-.inset-x-0 {
-  left: 0px;
-  right: 0px;
 }
 .top-0 {
   top: 0px;
@@ -685,9 +702,6 @@ select {
 }
 .m-12 {
   margin: 3rem;
-}
-.m-8 {
-  margin: 2rem;
 }
 .m-4 {
   margin: 1rem;
@@ -740,13 +754,13 @@ select {
   margin-left: 0.75rem;
   margin-right: 0.75rem;
 }
-.my-8 {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
 .mx-4 {
   margin-left: 1rem;
   margin-right: 1rem;
+}
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .ml-3 {
   margin-left: 0.75rem;
@@ -865,25 +879,20 @@ select {
 .h-24 {
   height: 6rem;
 }
-.h-12 {
-  height: 3rem;
-}
 .h-20 {
   height: 5rem;
 }
 .h-\[21rem\] {
   height: 21rem;
 }
-.h-fit {
-  height: -webkit-fit-content;
-  height: -moz-fit-content;
-  height: fit-content;
+.h-12 {
+  height: 3rem;
 }
 .h-80 {
   height: 20rem;
 }
-.h-28 {
-  height: 7rem;
+.h-screen {
+  height: 100vh;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -928,9 +937,6 @@ select {
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
-}
-.w-28 {
-  width: 7rem;
 }
 .max-w-xl {
   max-width: 36rem;
@@ -1084,9 +1090,6 @@ select {
 .border {
   border-width: 1px;
 }
-.border-2 {
-  border-width: 2px;
-}
 .border-0 {
   border-width: 0px;
 }
@@ -1124,10 +1127,6 @@ select {
 .border-gray-600 {
   --tw-border-opacity: 1;
   border-color: rgb(75 85 99 / var(--tw-border-opacity));
-}
-.border-green-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(34 197 94 / var(--tw-border-opacity));
 }
 .border-blue-800 {
   --tw-border-opacity: 1;
@@ -1176,33 +1175,17 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
-.bg-yellow-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(253 224 71 / var(--tw-bg-opacity));
-}
-.bg-red-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(248 113 113 / var(--tw-bg-opacity));
-}
-.bg-green-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(134 239 172 / var(--tw-bg-opacity));
-}
-.bg-\[\#7796C3\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(119 150 195 / var(--tw-bg-opacity));
-}
 .bg-gray-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
-.bg-yellow-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(250 204 21 / var(--tw-bg-opacity));
-}
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+.bg-\[\#7796C3\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(119 150 195 / var(--tw-bg-opacity));
 }
 .fill-current {
   fill: currentColor;
@@ -1213,14 +1196,14 @@ select {
 .p-2 {
   padding: 0.5rem;
 }
+.p-4 {
+  padding: 1rem;
+}
 .p-8 {
   padding: 2rem;
 }
 .p-3 {
   padding: 0.75rem;
-}
-.p-4 {
-  padding: 1rem;
 }
 .px-4 {
   padding-left: 1rem;
@@ -1253,10 +1236,6 @@ select {
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
-}
-.px-8 {
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 .py-0 {
   padding-top: 0px;
@@ -1433,6 +1412,10 @@ select {
 .text-blue-500 {
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity));
+}
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 .text-blue-700 {
   --tw-text-opacity: 1;
@@ -1814,6 +1797,14 @@ select {
   }
 }
 @media (min-width: 1024px) {
+
+  .lg\:absolute {
+    position: absolute;
+  }
+
+  .lg\:relative {
+    position: relative;
+  }
 
   .lg\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subjects', function (Blueprint $table) {
-            $table->id();
+        Schema::create('user_classrooms', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('classroom_id')->constrained();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('user_classrooms');
     }
 };

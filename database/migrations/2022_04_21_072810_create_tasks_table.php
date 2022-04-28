@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('study_id')->constrained();
             $table->string('name');
             $table->text('description');
-            $table->date('date_line');
+            $table->date('dateline');
             $table->timestamps();
         });
     }

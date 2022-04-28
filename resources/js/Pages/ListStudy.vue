@@ -1,6 +1,6 @@
 <template>
     <AuthenticatedLayout>
-        <div class="min-h-screen my-4">
+        <div class="my-4">
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-4">
                 <div
                     v-for="i in 10"

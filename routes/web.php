@@ -29,7 +29,7 @@ Route::get('/register2', function () {
 
 Route::get('/task', function() {
     return Inertia::render('Task');
-});
+})->name('task');
 
 Route::get('/list-study', function() {
     return Inertia::render('ListStudy');
@@ -37,7 +37,7 @@ Route::get('/list-study', function() {
 
 Route::get('/module', function() {
     return Inertia::render('Module');
-});
+})->name('module');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
