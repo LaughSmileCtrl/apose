@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('study_id')->constrained();
             $table->string('name');
             $table->text('description');
-            $table->date('deadline');
+            $table->dateTime('deadline');
             $table->timestamps();
         });
     }

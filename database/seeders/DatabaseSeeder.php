@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             SchoolSeeder::class,
             ClassroomSeeder::class,
             StudySeeder::class,
-            ModuleSeeder::class,
+            // ModuleSeeder::class,
         ]);
         
         User::factory(2)->create();

@@ -23,26 +23,38 @@
                             gap-3
                             justify-between
                             items-center
-                            md:items-start
-                            md:p-6 md:border
-                            border-gray-600
+                            md:items-start md:p-6 md:border
+                            border-gray-100
+                            md:shadow-md
+                            shadow-blue-300
                             rounded-xl
                         "
                     >
                         <div class="flex flex-col gap-1 md:gap-2 md:mb-3">
-                            <h2 class="text-lg uppercase" v-html="classroom.class" />
-                            <h2 class="text-md capitalize" v-html="classroom.study" />
+                            <h2
+                                class="text-lg uppercase"
+                                v-html="classroom.class"
+                            />
+                            <h2
+                                class="text-md capitalize"
+                                v-html="classroom.study"
+                            />
                         </div>
                         <div class="w-fit shrink-0">
                             <Link
-                                :href="route('teacher.classroom.show', [classroom.class_id, classroom.study_id])"
+                                :href="
+                                    route('teacher.classroom.show', [
+                                        classroom.class_id,
+                                        classroom.study_id,
+                                    ])
+                                "
                                 class="btn btn-primary"
                             >
                                 Akses Kelas
                             </Link>
                         </div>
                     </div>
-                    <hr class="md:hidden h-[2px] m-4 bg-slate-100">
+                    <hr class="md:hidden h-[2px] m-4 bg-slate-100" />
                 </div>
             </div>
         </div>

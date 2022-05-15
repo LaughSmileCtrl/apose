@@ -9,6 +9,7 @@
                 bg-white
                 text-blue-500
                 rounded-r-3xl
+                lg:rounded-3xl
                 p-6
             "
         >

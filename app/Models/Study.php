@@ -18,4 +18,9 @@ class Study extends Model
     {
         return $this->hasMany(Module::class);
     }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
 }

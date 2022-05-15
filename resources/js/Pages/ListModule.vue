@@ -117,14 +117,14 @@ export default {
     props: ["modules", "studyName"],
     data() {
         return {
-            studyId: route().params.id,
+            studyId: route().params.studyId,
         }
     },
     methods: {
         deleteModule(moduleOfStudy) {
             this.$swal({
                 title: "Anda yakin?",
-                text: `Anda akan menghapus ${moduleOfStudy.name} ini?`,
+                text: `Anda akan menghapus ${moduleOfStudy.name}?`,
                 icon: "warning",
                 showCloseButton: true,
                 showCancelButton: true,

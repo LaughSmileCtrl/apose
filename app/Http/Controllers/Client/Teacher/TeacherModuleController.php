@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Storage;
 
 class TeacherModuleController extends Controller
 {
-    public function index($id)
+    public function index($studyId)
     {
-        $study = Study::find($id);
+        $study = Study::find($studyId);
         $studyName = $study->name;
         $modules = $study->modules()->get();
 

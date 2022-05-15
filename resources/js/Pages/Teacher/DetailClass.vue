@@ -22,7 +22,7 @@
                     <h3 class="text-md text-gray-500">Materi</h3>
                 </Link>
 
-                <Link class="grid grid-cols-1 gap-3 place-items-center">
+                <Link :href="route('teacher.task.index', study.study_id)" class="grid grid-cols-1 gap-3 place-items-center">
                     <img src="/icons/task.png" class="h-24 w-24" alt="">
                     <h3 class="text-md text-gray-500">Tugas</h3>
                 </Link>

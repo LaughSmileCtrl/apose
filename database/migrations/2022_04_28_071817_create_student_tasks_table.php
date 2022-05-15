@@ -14,10 +14,16 @@ return new class extends Migration
     public function up()
     {
         Schema::create('student_tasks', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('task_id')->constrained();
-            $table->boolean('submit');
-            $table->boolean('late');
+            $table->foreignId('user_id')->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreignId('task_id')->constrained()
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->string('file_path')
+                ->default('');
+            $table->tinyInteger('status')
+                ->default(0);
             $table->timestamps();
         });
     }

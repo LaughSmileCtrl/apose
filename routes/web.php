@@ -3,6 +3,7 @@
 use App\Http\Controllers\Client\Teacher\TeacherDashbordController;
 use App\Http\Controllers\Client\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Client\Teacher\TeacherModuleController;
+use App\Http\Controllers\Client\Teacher\TeacherTaskController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,7 +40,7 @@ Route::name('teacher.')
     Route::get('/classroom/{id}/study/{studyId}', [TeacherClassroomController::class, 'show'])
         ->name('classroom.show');
 
-    Route::get('/study/{id}/module', [TeacherModuleController::class, 'index'])
+    Route::get('/study/{studyId}/module', [TeacherModuleController::class, 'index'])
         ->name('module.index');
 
     Route::post('/study/{studyId}/module', [TeacherModuleController::class, 'store'])
@@ -50,6 +51,18 @@ Route::name('teacher.')
     
     Route::delete('/study/{studyId}/module/{moduleId}', [TeacherModuleController::class, 'destroy'])
         ->name('module.destroy');
+
+    Route::get('/study/{studyId}/task', [TeacherTaskController::class, 'index'])
+        ->name('task.index');
+    
+    Route::post('/study/{studyId}/task', [TeacherTaskController::class, 'store'])
+        ->name('task.store');
+    
+    Route::get('/study/{studyId}/task/{taskId}', [TeacherTaskController::class, 'show'])
+        ->name('task.show');
+
+    Route::delete('/study/{studyId}/task/{taskId}', [TeacherTaskController::class, 'destroy'])
+        ->name('task.destroy');
 });
 
 Route::get('/task', function() {

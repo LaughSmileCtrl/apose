@@ -51,4 +51,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Classroom::class, 'user_classrooms');
     }
+
+    public function tasksCreated()
+    {
+        return $this->hasMany(Task::class, 'creator_id');
+    }
+
+    public function studentTasks()
+    {
+        return $this->belongsToMany(Task::class, 'student_tasks')
+            ->withPivot('status', 'file_path');
+    }
+
 }

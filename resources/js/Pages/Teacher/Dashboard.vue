@@ -3,7 +3,10 @@
         <div class="container mx-auto flex flex-row gap-x-5">
             <SideNav v-if="showSideNav" @close="toggleSideNav" />
             <div class="w-[300px] h-auto bg-white rounded-3xl hidden lg:block">
-                <SideNav :class="sideNavClass + 'rounded-3xl'" @close="toggleSideNav" />
+                <SideNav
+                    :class="sideNavClass + ' rounded-3xl'"
+                    @close="toggleSideNav"
+                />
             </div>
             <div class="w-full h-auto bg-white rounded-3xl">
                 <!-- <div
@@ -158,22 +161,36 @@
                         </div>
                     </div>
                 </div> -->
-                <div
-                    class="w-full my-8"
-                >
+                <div class="w-full my-8">
                     <div class="flex flex-col gap-2 mx-4">
                         <h3 class="text-md">Daftar Mata Pelajaran</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-6 py-6 place-items-center">
+                        <div
+                            class="
+                                grid grid-cols-2
+                                md:grid-cols-4
+                                xl:grid-cols-5
+                                gap-6
+                                py-6
+                                place-items-center
+                                justify-items-center
+                                place-content-center
+                            "
+                        >
                             <Link
                                 v-for="classroom in classrooms"
                                 :key="classroom"
-                                :href="route('teacher.classroom.show', [classroom.class_id, classroom.study_id])"
+                                :href="
+                                    route('teacher.classroom.show', [
+                                        classroom.class_id,
+                                        classroom.study_id,
+                                    ])
+                                "
                                 class="
                                     flex flex-col
                                     justify-around
                                     h-24
                                     w-36
-                                    border border-gray-200
+                                    border border-gray-100
                                     shadow-md shadow-blue-200
                                     rounded-md
                                     px-1
@@ -187,7 +204,10 @@
                                     "
                                     v-html="classroom.class"
                                 />
-                                <h2 class="text-center text-sm capitalize" v-html="classroom.study" />
+                                <h2
+                                    class="text-center text-sm capitalize"
+                                    v-html="classroom.study"
+                                />
                             </Link>
 
                             <Link
