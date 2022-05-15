@@ -1,16 +1,16 @@
 <template>
     <swiper
-        :slidesPerView="'auto'"
+        :slidesPerView="1"
         :spaceBetween="30"
         :pagination="{
             clickable: true,
         }"
         :modules="modules"
+        :breakpoints="breakpoints"
     >
         <swiper-slide v-for="i in 5" :key="i">
             <div
                 class="
-                    card
                     rounded-xl
                     p-6
                     mb-10
@@ -34,7 +34,10 @@
                                 Senin, 24 Maret 2022
                             </h3>
                         </div>
-                        <button @click="showModal" class="btn bg-white text-blue-700">
+                        <button
+                            @click="showModal"
+                            class="btn bg-white text-blue-700"
+                        >
                             Kumpulkan
                         </button>
                     </div>
@@ -63,6 +66,36 @@ export default {
     setup() {
         return {
             modules: [Pagination],
+        };
+    },
+    data() {
+        return {
+            breakpoints: {
+                1536: {
+                    slidesPerView: 4,
+                    spaceBetween: 10,
+                },
+                1280: {
+                    slidesPerView: 3,
+                    spaceBetween: 10,
+                },
+                1024: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                },
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 10,
+                },
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 5,
+                },
+            },
         };
     },
     methods: {

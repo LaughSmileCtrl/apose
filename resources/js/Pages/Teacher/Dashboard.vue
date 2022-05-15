@@ -1,9 +1,9 @@
 <template>
-    <div class="max-w-screen min-h-screen bg-gray-100">
+    <div class="max-w-screen min-h-screen bg-gray-100 lg:py-6">
         <div class="container mx-auto flex flex-row gap-x-5">
             <SideNav v-if="showSideNav" @close="toggleSideNav" />
             <div class="w-[300px] h-auto bg-white rounded-3xl hidden lg:block">
-                <SideNav :class="sideNavClass" @close="toggleSideNav" />
+                <SideNav :class="sideNavClass + 'rounded-3xl'" @close="toggleSideNav" />
             </div>
             <div class="w-full h-auto bg-white rounded-3xl">
                 <!-- <div
@@ -26,6 +26,7 @@
                         rounded-b-[80px]
                         px-4
                         py-0
+                        lg:rounded-t-3xl
                     "
                 >
                     <div class="py-8">
@@ -158,65 +159,24 @@
                     </div>
                 </div> -->
                 <div
-                    v-if="$page.props.auth.user.roles[0].name == 'student'"
                     class="w-full my-8"
                 >
                     <div class="flex flex-col gap-2 mx-4">
                         <h3 class="text-md">Daftar Mata Pelajaran</h3>
-                        <div class="grid grid-cols-4 gap-4 py-6">
-                            <Link
-                                :href="route('detail-study')"
-                                v-for="i in 7"
-                                :key="i"
-                                class="flex flex-col gap-1 items-center"
-                            >
-                                <div class="">
-                                    <img
-                                        class="h-12 w-12"
-                                        :src="`/icons/${icons[i - 1]}`"
-                                        alt=""
-                                    />
-                                </div>
-                                <h3 class="w-20 text-xs text-center">
-                                    nama pelajaran
-                                </h3>
-                            </Link>
-                            <Link
-                                class="flex flex-col gap-1 items-center"
-                                :href="route('list-study')"
-                            >
-                                <div class="">
-                                    <img
-                                        class="h-12 w-12"
-                                        src="/icons/plus.png"
-                                        alt=""
-                                    />
-                                </div>
-                                <h3 class="w-20 text-xs text-center">
-                                    nama pelajaran
-                                </h3>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    v-if="$page.props.auth.user.roles[0].name == 'teacher'"
-                    class="w-full my-8"
-                >
-                    <div class="flex flex-col gap-2 mx-4">
-                        <h3 class="text-md">Daftar Mata Pelajaran</h3>
-                        <div class="grid grid-cols-4 gap-4 py-6 place-items-center">
+                        <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-6 py-6 place-items-center">
                             <Link
                                 v-for="classroom in classrooms"
                                 :key="classroom"
+                                :href="route('teacher.classroom.show', [classroom.class_id, classroom.study_id])"
                                 class="
                                     flex flex-col
                                     justify-around
                                     h-24
                                     w-36
                                     border border-gray-200
-                                    shadow-md shadow-gray-300
+                                    shadow-md shadow-blue-200
                                     rounded-md
+                                    px-1
                                 "
                             >
                                 <h2
@@ -232,7 +192,7 @@
 
                             <Link
                                 class="flex flex-col gap-1 items-center"
-                                :href="route('list-study')"
+                                :href="route('teacher.classroom.index')"
                             >
                                 <div class="">
                                     <img
@@ -245,14 +205,6 @@
                                     Tampilkan Lebih
                                 </h3>
                             </Link>
-                        </div>
-                    </div>
-                </div>
-                <div v-if="$page.props.auth.user.roles[0].name == 'student'" class="w-auto my-8">
-                    <div class="flex flex-col gap-5 mx-4">
-                        <h3 class="text-md">Yuk Kerjain Tugas</h3>
-                        <div class="flex">
-                            <Slider />
                         </div>
                     </div>
                 </div>

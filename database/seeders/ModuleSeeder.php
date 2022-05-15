@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\School;
+use App\Models\Module;
+use App\Models\Study;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SchoolSeeder extends Seeder
+class ModuleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +16,9 @@ class SchoolSeeder extends Seeder
      */
     public function run()
     {
-        School::factory(1)->create();
+        Study::all()
+            ->each(function($study, $key) {
+                $study->modules()->saveMany(Module::factory(7)->make());
+            });
     }
 }

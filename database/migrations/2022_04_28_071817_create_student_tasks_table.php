@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('task_id')->constrained();
             $table->boolean('submit');
+            $table->boolean('late');
             $table->timestamps();
         });
     }

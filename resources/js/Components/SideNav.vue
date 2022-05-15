@@ -1,8 +1,9 @@
 <template>
-    <div class="fixed inset-0 z-50 overflow-y-hidden bg-black/60">
+    <div class="fixed lg:relative inset-0 h-full z-50 bg-black/60 lg:bg-transparent">
         <div
             class="
                 absolute
+                lg:relative
                 inset-y-0
                 w-64
                 bg-white

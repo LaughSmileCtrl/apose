@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('creator_id');
+            $table->foreign('creator_id')->references('id')->on('users');
             $table->foreignId('study_id')->constrained();
             $table->string('name');
             $table->text('description');
-            $table->date('dateline');
+            $table->date('deadline');
             $table->timestamps();
         });
     }
