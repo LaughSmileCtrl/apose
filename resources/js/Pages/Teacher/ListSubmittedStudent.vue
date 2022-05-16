@@ -4,7 +4,7 @@
             <div class="container mx-auto">
                 <div class="m-4">
                     <h2 class="text-xl font-bold text-center uppercase">
-                        Tugas {{ task }}
+                        Tugas {{ task.name }}
                     </h2>
                     <div class="mt-8">
                         <div class="grid grid-cols-1 gap-5">
@@ -23,8 +23,20 @@
                                     shadow shadow-blue-300
                                 "
                             >
-                                <h1 class="line-clamp-1 text-lg capitalize" v-html="student.name" />
-                                <button class="text-blue-500">
+                                <h1
+                                    class="line-clamp-1 text-lg capitalize"
+                                    v-html="student.name"
+                                />
+                                <a
+                                    :href="
+                                        route('teacher.task.student', [
+                                            task.id,
+                                            student.id,
+                                        ])
+                                    "
+                                    class="text-blue-500"
+                                    target="_blank"
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-8 w-8"
@@ -39,7 +51,7 @@
                                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                                         />
                                     </svg>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>

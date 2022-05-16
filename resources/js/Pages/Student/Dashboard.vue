@@ -1,5 +1,5 @@
 <template>
-    <div class="max-w-screen min-h-screen bg-gray-100">
+    <div class="max-w-screen min-h-screen bg-gray-100 lg:py-6">
         <div class="container mx-auto flex flex-row gap-x-5">
             <SideNav v-if="showSideNav" @close="toggleSideNav" />
             <div class="w-[300px] h-auto bg-white rounded-3xl hidden lg:block">
@@ -26,6 +26,7 @@
                         rounded-b-[80px]
                         px-4
                         py-0
+                        lg:rounded-t-3xl
                     "
                 >
                     <div class="py-8">
@@ -57,13 +58,15 @@
                             </div>
                             <div class="flex flex-col ml-3">
                                 <h2
-                                    class="text-md font-semibold"
+                                    class="text-md font-semibold capitalize"
                                     v-html="$page.props.auth.user.name"
                                 />
-                                <h3 class="text-xs" v-html="school" />
+                                <h3 class="text-xs uppercase">
+                                {{ classroom.name }} &nbsp; |  &nbsp; {{ school }}
+                                </h3>
                                 <h3
                                     class="text-xs"
-                                    v-html="$page.props.auth.user.unique_id"
+                                    v-html="$page.props.auth.user.unique_key"
                                 />
                             </div>
                         </div>
@@ -96,7 +99,7 @@
                                     "
                                 >
                                     <Link
-                                        :href="route('detail-study')"
+                                        :href="route('student.detail-study')"
                                         class="
                                             grid grid-cols-1
                                             justify-items-center
@@ -115,7 +118,7 @@
                                         </h3>
                                     </Link>
                                     <Link
-                                        :href="route('detail-study')"
+                                        :href="route('student.detail-study')"
                                         class="
                                             grid grid-cols-1
                                             justify-items-center
@@ -134,7 +137,7 @@
                                         </h3>
                                     </Link>
                                     <Link
-                                        :href="route('detail-study')"
+                                        :href="route('student.detail-study')"
                                         class="
                                             grid grid-cols-1
                                             justify-items-center
@@ -158,81 +161,31 @@
                     </div>
                 </div> -->
                 <div
-                    v-if="$page.props.auth.user.roles[0].name == 'student'"
                     class="w-full my-8"
                 >
                     <div class="flex flex-col gap-2 mx-4">
                         <h3 class="text-md">Daftar Mata Pelajaran</h3>
                         <div class="grid grid-cols-4 gap-4 py-6">
                             <Link
-                                :href="route('detail-study')"
-                                v-for="i in 7"
-                                :key="i"
+                                :href="route('student.study.show', study.id)"
+                                v-for="study in studies"
+                                :key="study.id"
                                 class="flex flex-col gap-1 items-center"
                             >
                                 <div class="">
                                     <img
                                         class="h-12 w-12"
-                                        :src="`/icons/${icons[i - 1]}`"
+                                        :src="study.icon_path"
                                         alt=""
                                     />
                                 </div>
-                                <h3 class="w-20 text-xs text-center">
-                                    nama pelajaran
-                                </h3>
-                            </Link>
-                            <Link
-                                class="flex flex-col gap-1 items-center"
-                                :href="route('list-study')"
-                            >
-                                <div class="">
-                                    <img
-                                        class="h-12 w-12"
-                                        src="/icons/plus.png"
-                                        alt=""
-                                    />
-                                </div>
-                                <h3 class="w-20 text-xs text-center">
-                                    nama pelajaran
-                                </h3>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    v-if="$page.props.auth.user.roles[0].name == 'teacher'"
-                    class="w-full my-8"
-                >
-                    <div class="flex flex-col gap-2 mx-4">
-                        <h3 class="text-md">Daftar Mata Pelajaran</h3>
-                        <div class="grid grid-cols-4 gap-4 py-6 place-items-center">
-                            <Link
-                                v-for="classroom in classrooms"
-                                :key="classroom"
-                                class="
-                                    flex flex-col
-                                    justify-around
-                                    h-24
-                                    w-36
-                                    border border-gray-200
-                                    shadow-md shadow-gray-300
-                                    rounded-md
-                                "
-                            >
-                                <h2
-                                    class="
-                                        text-center text-md
-                                        font-semibold
-                                        uppercase
-                                    "
-                                    v-html="classroom.class"
-                                />
-                                <h2 class="text-center text-sm capitalize" v-html="classroom.study" />
+                                <h3 class="w-20 text-xs text-center" v-html="study.name"/>
                             </Link>
 
+                            <!-- More -->
                             <Link
                                 class="flex flex-col gap-1 items-center"
-                                :href="route('list-study')"
+                                :href="route('student.study.index')"
                             >
                                 <div class="">
                                     <img
@@ -242,17 +195,17 @@
                                     />
                                 </div>
                                 <h3 class="w-20 text-xs text-center">
-                                    Tampilkan Lebih
+                                    Tampilkan lebih
                                 </h3>
                             </Link>
                         </div>
                     </div>
                 </div>
-                <div v-if="$page.props.auth.user.roles[0].name == 'student'" class="w-auto my-8">
-                    <div class="flex flex-col gap-5 mx-4">
+                <div class="my-8">
+                    <div class="grid grid-cols-1 gap-5 mx-4">
                         <h3 class="text-md">Yuk Kerjain Tugas</h3>
-                        <div class="flex">
-                            <Slider />
+                        <div class="px-2">
+                            <Slider :tasks="tasks"/>
                         </div>
                     </div>
                 </div>
@@ -263,24 +216,15 @@
 <script>
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import SideNav from "@/Components/SideNav.vue";
-import Slider from "@/Components/Slider.vue";
+import Slider from "@/Pages/Student/Components/Slider.vue";
 
 export default {
     data() {
         return {
-            icons: [
-                "book.png",
-                "language.png",
-                "local.png",
-                "mosque.png",
-                "quran.png",
-                "ruler.png",
-                "sport.png",
-            ],
             showSideNav: false,
         };
     },
-    props: ["school", "classrooms"],
+    props: ["school", "classroom", "studies", "tasks"],
     components: {
         Link,
         Head,

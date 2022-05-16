@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Study;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Http\Requests\Client\ModuleStoreRequest;
+use App\Http\Requests\Client\FileStoreRequest;
 use App\Models\Module;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,7 +25,7 @@ class TeacherModuleController extends Controller
     }
 
     
-    public function store($studyId, ModuleStoreRequest $request)
+    public function store($studyId, FileStoreRequest $request)
     {
         $pathFile = $request->file->store('modules');
 

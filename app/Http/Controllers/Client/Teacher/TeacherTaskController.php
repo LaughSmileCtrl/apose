@@ -58,7 +58,7 @@ class TeacherTaskController extends Controller
 
 
         return Inertia::render('Teacher/ListSubmittedStudent', [
-            'task' => $task->name,
+            'task' => $task,
             'students' => $students,
         ]);
     }

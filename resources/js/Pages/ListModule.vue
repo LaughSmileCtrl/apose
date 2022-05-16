@@ -43,9 +43,20 @@
                                 mt-12
                             "
                         >
-                            <div class="flex flex-row gap-5">
+                            <div
+                                v-if="
+                                    $page.props.auth.user.roles[0].name ==
+                                    'teacher'
+                                "
+                                class="flex flex-row gap-5"
+                            >
                                 <a
-                                    :href="route('teacher.module.show', [studyId, moduleOfStudy.id])"
+                                    :href="
+                                        route('teacher.module.show', [
+                                            studyId,
+                                            moduleOfStudy.id,
+                                        ])
+                                    "
                                     target="_blank"
                                     class="text-blue-500"
                                 >
@@ -64,7 +75,10 @@
                                         />
                                     </svg>
                                 </a>
-                                <button @click="deleteModule(moduleOfStudy)" class="text-blue-500">
+                                <button
+                                    @click="deleteModule(moduleOfStudy)"
+                                    class="text-blue-500"
+                                >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         class="h-8 w-8"
@@ -81,6 +95,19 @@
                                     </svg>
                                 </button>
                             </div>
+                            <a
+                                v-else
+                                class="btn btn-primary"
+                                :href="
+                                    route('student.module.show', [
+                                        studyId,
+                                        moduleOfStudy.id,
+                                    ])
+                                "
+                                target="_blank"
+                            >
+                                Unduh
+                            </a>
                             <div class="">
                                 <h3
                                     class="text-sm text-gray-500"
@@ -118,7 +145,7 @@ export default {
     data() {
         return {
             studyId: route().params.studyId,
-        }
+        };
     },
     methods: {
         deleteModule(moduleOfStudy) {
@@ -130,16 +157,29 @@ export default {
                 showCancelButton: true,
                 reverseButtons: true,
             }).then((result) => {
-                if (result.isConfirmed) {    
-                   this.$inertia.delete(route(`teacher.module.destroy`, [this.studyId, moduleOfStudy.id]), {
-                        onSuccess: (page) => {
-                            this.$swal('Berhasil Terhapus', this.$attrs['flash'].message, 'success');
-                        },
-                        onError: (message) => {
-                            this.$swal('Gagal Menghapus', this.errors, 'error')
-
+                if (result.isConfirmed) {
+                    this.$inertia.delete(
+                        route(`teacher.module.destroy`, [
+                            this.studyId,
+                            moduleOfStudy.id,
+                        ]),
+                        {
+                            onSuccess: (page) => {
+                                this.$swal(
+                                    "Berhasil Terhapus",
+                                    this.$attrs["flash"].message,
+                                    "success"
+                                );
+                            },
+                            onError: (message) => {
+                                this.$swal(
+                                    "Gagal Menghapus",
+                                    this.errors,
+                                    "error"
+                                );
+                            },
                         }
-                    }); 
+                    );
                 }
             });
         },
@@ -196,10 +236,14 @@ export default {
                                 "Gagal menambah data",
                                 `<ul class="text-red-500 ">
                                 <li class="capitalize">${
-                                    this.$attrs['errors'].name ? this.$attrs['errors'].name : ""
+                                    this.$attrs["errors"].name
+                                        ? this.$attrs["errors"].name
+                                        : ""
                                 }</li>
                                 <li class="capitalize">${
-                                    this.$attrs['errors'].file ? this.$attrs['errors'].file : ""
+                                    this.$attrs["errors"].file
+                                        ? this.$attrs["errors"].file
+                                        : ""
                                 }</li>
                                 </ul>`,
                                 "error"

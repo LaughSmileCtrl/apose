@@ -56,7 +56,7 @@
                                 <img
                                     class="h-14 w-14"
                                     src="/icons/avatar.png"
-                                    alt=""
+                                    alt=""  
                                 />
                             </div>
                             <div class="flex flex-col ml-3">
@@ -67,7 +67,7 @@
                                 <h3 class="text-xs" v-html="school" />
                                 <h3
                                     class="text-xs"
-                                    v-html="$page.props.auth.user.unique_id"
+                                    v-html="$page.props.auth.user.unique_key"
                                 />
                             </div>
                         </div>
@@ -235,20 +235,10 @@
 <script>
 import { Head, Link } from "@inertiajs/inertia-vue3";
 import SideNav from "@/Components/SideNav.vue";
-import Slider from "@/Components/Slider.vue";
 
 export default {
     data() {
         return {
-            icons: [
-                "book.png",
-                "language.png",
-                "local.png",
-                "mosque.png",
-                "quran.png",
-                "ruler.png",
-                "sport.png",
-            ],
             showSideNav: false,
         };
     },
@@ -257,7 +247,6 @@ export default {
         Link,
         Head,
         SideNav,
-        Slider,
     },
     methods: {
         toggleSideNav() {

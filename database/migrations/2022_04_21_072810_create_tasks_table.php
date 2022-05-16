@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('creator_id')->references('id')->on('users');
             $table->foreignId('study_id')->constrained();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->dateTime('deadline');
             $table->timestamps();
         });

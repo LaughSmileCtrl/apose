@@ -13,7 +13,7 @@
             "
         >
             <div class="container mx-auto">
-                <Link v-if="$page.props.auth.user.roles[0].name == 'teacher'" :href="route('teacher.dashboard')">
+                <button @click="back">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="h-6 w-6"
@@ -28,7 +28,7 @@
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"
                         />
                     </svg>
-                </Link>
+                </button>
             </div>
         </div>
 
@@ -45,6 +45,11 @@ import { Head, Link } from "@inertiajs/inertia-vue3";
 export default {
     components: {
         Link,
-    }    
+    },
+    methods: {
+        back() {
+            history.back();
+        },
+    }
 }
 </script>

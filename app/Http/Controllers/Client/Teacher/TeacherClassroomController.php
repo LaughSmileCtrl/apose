@@ -55,6 +55,7 @@ class TeacherClassroomController extends Controller
             'class' => $study->classroom->name,
             'study_id' => $study->id,
             'study' => $study->name,
+            'conversation_url' => $study->conversation_url,
         ];
 
         return Inertia::render('Teacher/DetailClass', [

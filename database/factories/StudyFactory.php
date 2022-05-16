@@ -18,6 +18,7 @@ class StudyFactory extends Factory
     {
         return [
             'name' => $this->faker->words(3, true),
+            'icon_path' => 'studies/icons/default.png',
         ];
     }
 }

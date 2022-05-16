@@ -60,7 +60,8 @@ class User extends Authenticatable
     public function studentTasks()
     {
         return $this->belongsToMany(Task::class, 'student_tasks')
-            ->withPivot('status', 'file_path');
+            ->withPivot('status', 'file_path')
+            ->withTimestamps();
     }
 
 }

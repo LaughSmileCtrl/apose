@@ -3,7 +3,9 @@
         <div class="max-w-screen min-h-screen">
             <div class="container mx-auto">
                 <div class="m-4">
-                    <h2 class="text-xl font-bold uppercase">Tugas {{ study }}</h2>
+                    <h2 class="text-xl font-bold uppercase">
+                        Tugas {{ study }}
+                    </h2>
                     <div class="mt-8">
                         <div class="w-full flex justify-end my-8">
                             <button
@@ -82,7 +84,13 @@
                                             $page.props.auth.user.roles[0]
                                                 .name == 'teacher'
                                         "
-                                        class="flex flex-wrap gap-2 ml-3 items-center justify-center"
+                                        class="
+                                            flex flex-wrap
+                                            gap-2
+                                            ml-3
+                                            items-center
+                                            justify-center
+                                        "
                                     >
                                         <button
                                             @click="showSubmitedTask(task)"

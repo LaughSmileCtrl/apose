@@ -9,6 +9,10 @@ class Study extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'conversation_url'
+    ];
+
     public function classroom()
     {
         return $this->belongsTo(Classroom::class);

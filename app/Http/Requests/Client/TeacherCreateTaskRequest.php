@@ -25,7 +25,7 @@ class TeacherCreateTaskRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'description' => 'string|max:500',
+            'description' => 'nullable|string|max:500',
             'deadline' => 'required|date',
             'study_id' => 'required|exists:studies,id'
         ];
