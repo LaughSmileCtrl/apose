@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\SuperAdminDashboardController;
+use App\Http\Controllers\Admin\SuperAdminSchoolController;
 use App\Http\Controllers\Client\Student\StudentDashboardController;
 use App\Http\Controllers\Client\Student\StudentModuleController;
 use App\Http\Controllers\Client\Student\StudentStudyController;
@@ -9,7 +12,6 @@ use App\Http\Controllers\Client\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Client\Teacher\TeacherConversationController;
 use App\Http\Controllers\Client\Teacher\TeacherModuleController;
 use App\Http\Controllers\Client\Teacher\TeacherTaskController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -101,17 +103,9 @@ Route::name('student.')
     });
 
 
-Route::get('/task', function () {
-    return Inertia::render('Task');
-})->name('task');
+Route::get('/admin/dashboard', [SuperAdminDashboardController::class, 'index'])
+    ->name('admin.dashboard');
 
-
-Route::get('/module', function () {
-    return Inertia::render('Module');
-})->name('module');
-
-Route::get('/detail-study', function () {
-    return Inertia::render('DetailStudy');
-})->name('detail-study');
+Route::resource('schools', SuperAdminSchoolController::class);
 
 require __DIR__ . '/auth.php';

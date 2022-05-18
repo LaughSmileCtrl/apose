@@ -28,6 +28,8 @@
     },
     "dependencies": {
         "swiper": "^8.0.7",
-        "vue-sweetalert2": "^5.0.2"
+        "vue-sweetalert2": "^5.0.2",
+        "@fortawesome/fontawesome-free": "5.15.3",
+        "@popperjs/core": "2.9.1"
     }
 }

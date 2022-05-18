@@ -6,6 +6,7 @@ import { InertiaProgress } from '@inertiajs/progress';
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 const options = {
