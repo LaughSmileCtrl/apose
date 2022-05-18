@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\SuperAdminClassroomController;
 use App\Http\Controllers\Admin\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\SuperAdminSchoolController;
+use App\Http\Controllers\Admin\SuperAdminStudyController;
 use App\Http\Controllers\Client\Student\StudentDashboardController;
 use App\Http\Controllers\Client\Student\StudentModuleController;
 use App\Http\Controllers\Client\Student\StudentStudyController;
@@ -107,5 +109,7 @@ Route::get('/admin/dashboard', [SuperAdminDashboardController::class, 'index'])
     ->name('admin.dashboard');
 
 Route::resource('schools', SuperAdminSchoolController::class);
+Route::resource('classrooms', SuperAdminClassroomController::class);
+Route::resource('studies', SuperAdminStudyController::class);
 
 require __DIR__ . '/auth.php';

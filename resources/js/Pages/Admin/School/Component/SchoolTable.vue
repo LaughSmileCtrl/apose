@@ -195,7 +195,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <Pagination :links="schools.links"/>
+                    <Pagination :links="schools.links" />
                 </div>
             </div>
         </div>
@@ -244,9 +244,9 @@ export default {
                     return [document.getElementById("name").value];
                 },
                 customClass: {
-                    container: 'bg-blue-500 rounded-3xl',
-                    popup: 'rounded-3xl text-red-200',
-                }
+                    container: "bg-blue-500 rounded-3xl",
+                    popup: "rounded-3xl text-red-200",
+                },
             }).then((input) => {
                 var inputJson = {
                     name: input.value[0],
@@ -354,7 +354,8 @@ export default {
                         onSuccess: (page) => {
                             this.$swal(
                                 "Berhasil Terhapus",
-                                this.$attrs["flash"].message,
+                                page.props.flash.message,
+
                                 "success"
                             );
                         },

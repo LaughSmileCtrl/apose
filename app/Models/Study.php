@@ -10,7 +10,13 @@ class Study extends Model
     use HasFactory;
 
     protected $fillable = [
-        'conversation_url'
+        'name',
+        'conversation_url',
+    ];
+
+    protected $attributes = [
+        'conversation_url' => '',
+        'icon_path' => 'studies/icons/default.png',
     ];
 
     public function classroom()

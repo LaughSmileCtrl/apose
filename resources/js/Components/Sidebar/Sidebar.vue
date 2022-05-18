@@ -199,12 +199,30 @@
                         <Link
                             :href="route('schools.index')"
                             class="text-xs uppercase py-3 font-bold block"
-                            :class="
-                                navClass(route().current('schools.index'))
-                            "
+                            :class="navClass(route().current('schools.index'))"
                         >
                             <i class="fas fa-school mr-2 text-sm"></i>
                             Sekolah
+                        </Link>
+                    </li>
+                    <li class="items-center">
+                        <Link
+                            :href="route('classrooms.index')"
+                            class="text-xs uppercase py-3 font-bold block"
+                            :class="navClass(route().current('classrooms.index'))"
+                        >
+                            <i class="fas fa-chalkboard text-sm"></i>
+                            Ruang Kelas
+                        </Link>
+                    </li>
+                    <li class="items-center">
+                        <Link
+                            :href="route('studies.index')"
+                            class="text-xs uppercase py-3 font-bold block"
+                            :class="navClass(route().current('studies.index'))"
+                        >
+                            <i class="fas fa-book text-sm"></i>
+                            Pelajaran
                         </Link>
                     </li>
                 </ul>

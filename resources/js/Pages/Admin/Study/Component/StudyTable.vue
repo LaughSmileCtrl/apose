@@ -3,7 +3,7 @@
         <div class="py-8">
             <div class="mb-1 flex w-full flex-row justify-between sm:mb-0">
                 <div class="flex flex-wrap gap-2">
-                    <button @click="showAddClassroom" class="btn btn-primary">
+                    <button @click="showModal" class="btn btn-primary">
                         Tambah
                     </button>
                 </div>
@@ -34,7 +34,7 @@
                                     border border-transparent border-gray-300
                                     bg-white
                                     py-3
-                                    px-4showAddClassroomgray-400
+                                    px-4showModalgray-400
                                     shadow-sm
                                     focus:border-transparent
                                     focus:outline-none
@@ -118,6 +118,21 @@
                                         text-gray-800
                                     "
                                 >
+                                    Nama Pelajaran
+                                </th>
+                                <th
+                                    scope="col"
+                                    class="
+                                        border-b border-gray-200
+                                        bg-white
+                                        px-5
+                                        py-3
+                                        text-left text-sm
+                                        font-normal
+                                        uppercase
+                                        text-gray-800
+                                    "
+                                >
                                     Tanggal dibuat
                                 </th>
                                 <th
@@ -136,10 +151,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr
-                                v-for="classroom in classrooms.data"
-                                :key="classroom.id"
-                            >
+                            <tr v-for="study in studies.data" :key="study.id">
                                 <td
                                     class="
                                         border-b border-gray-200
@@ -148,7 +160,7 @@
                                         py-5
                                         text-sm
                                     "
-                                    v-html="classroom.id"
+                                    v-html="study.id"
                                 />
                                 <td
                                     class="
@@ -159,7 +171,7 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="classroom.school.name"
+                                    v-html="study.classroom.school.name"
                                 />
                                 <td
                                     class="
@@ -170,7 +182,18 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="classroom.name"
+                                    v-html="study.classroom.name"
+                                />
+                                <td
+                                    class="
+                                        border-b border-gray-200
+                                        bg-white
+                                        px-5
+                                        py-5
+                                        text-sm
+                                        capitalize
+                                    "
+                                    v-html="study.name"
                                 />
                                 <td
                                     class="
@@ -182,7 +205,7 @@
                                     "
                                     v-html="
                                         new Date(
-                                            classroom.created_at
+                                            study.created_at
                                         ).toLocaleString('ID-id', {
                                             timezone: 'Asia/Jakarta',
                                             weekday: 'long',
@@ -205,17 +228,17 @@
                                         text-sm
                                     "
                                 >
-                                    <!-- <button
-                                        @click="editClassroom(classroom)"
+                                    <button
+                                        @click="editStudy(study)"
                                         class="
                                             text-blue-400
                                             hover:text-blue-900
                                         "
                                     >
                                         Edit
-                                    </button> -->
+                                    </button>
                                     <button
-                                        @click="deleteClassroom(classroom)"
+                                        @click="deleteStudy(study)"
                                         class="text-red-400 hover:t ext-red-900"
                                     >
                                         Hapus
@@ -224,148 +247,213 @@
                             </tr>
                         </tbody>
                     </table>
-                    <Pagination :links="classrooms.links" />
+                    <Pagination :links="studies.links" />
                 </div>
             </div>
         </div>
     </div>
+    <CustomModal :show="modalStatus" @close="closeModal" @confirmed="confirmedModal">
+        <div
+            class="
+                grid grid-cols-3
+                gap-y-6 gap-x-1
+                justify-items-start
+                place-items-center
+                px-3
+            "
+        >
+            <label>Sekolah</label>
+            <select
+                v-model="schoolSelectedId"
+                :disabled="selectedStudy != null"
+                class="col-span-2 rounded-xl px-2 my-1 w-full"
+            >
+                <option
+                    v-for="school in schools"
+                    :key="school"
+                    :value="school.id"
+                    v-html="school.name"
+                />
+            </select>
+            <label>Kelas</label>
+            <select
+                v-model="classroomSelectedId"
+                :disabled="selectedStudy != null"
+                class="col-span-2 rounded-xl px-2 my-1 w-full"
+            >
+                <option
+                    v-for="classroom in classrooms[schoolSelectedId]"
+                    :key="classroom"
+                    :value="classroom.id"
+                    v-html="classroom.name"
+                />
+            </select>
+            <label>Nama Pelajaran</label>
+            <input
+                v-model="studyName"
+                type="text"
+                placeholder="Masukkan Nama Pelajaran"
+                class="col-span-2 rounded-xl px-2 my-1 w-full"
+            />
+        </div>
+    </CustomModal>
 </template>
 
 <script>
 import Pagination from "@/Components/Pagination.vue";
+import CustomModal from "@/Components/CustomModal.vue";
 
 export default {
     data() {
         return {
             searchQuery: "",
+            modalStatus: false,
+            schoolSelectedId: null,
+            classroomSelectedId: null,
+            studyName: null,
+            selectedStudy: null,
         };
     },
-    props: ["schools", "classrooms"],
+    props: ["schools", "classrooms", "studies"],
     components: {
         Pagination,
+        CustomModal,
     },
     computed: {
-        schoolsOption() {
-            var schoolsOption = "";
+        schoolsOptions() {
+            var schoolsOptions = "";
             this.schools.forEach((school) => {
-                schoolsOption += `<option value="${school.id}" class="capitalize">
+                schoolsOptions += `<option value="${school.id}" class="capitalize">
                         ${school.name}
                     </option>`;
             });
 
-            return schoolsOption;
+            return schoolsOptions;
         },
     },
     methods: {
         search() {
             this.$inertia.get(
-                route("classrooms.index"),
+                route("studies.index"),
                 { search: this.searchQuery },
-                { only: ["classrooms"], preserveState: true }
+                { only: ["studies"], preserveState: true }
             );
         },
-        showAddClassroom() {
-            this.$swal({
-                title: "Tambah Kelas Baru",
-                html: `
-                <div class="grid grid-cols-3 gap-y-6 gap-x-1 justify-items-start place-items-center px-3 ">
-                    <label>Sekolah</label>
-                    <select 
-                        id="school"
-                        class="col-span-2 rounded-xl px-2 my-1 w-full"
-                    >
-                        ${this.schoolsOption}
-                    </select>
-                    <label>Nama Kelas</label>
-                    <input 
-                        id="classroom" 
-                        type="text" 
-                        placeholder="Masukkan Nama Kelas" 
-                        class="col-span-2 rounded-xl px-2 my-1 w-full"
-                    >
-                </div>
-                `,
-                showCloseButton: true,
-                showCancelButton: true,
-                reverseButtons: true,
-                preConfirm: () => {
-                    return [
-                        document.getElementById("school").value,
-                        document.getElementById("classroom").value,
-                    ];
-                },
-                customClass: {
-                    container: "bg-blue-500 rounded-3xl",
-                    popup: "rounded-3xl text-red-200",
-                },
-            }).then((input) => {
-                var inputJson = {
-                    schoolId: input.value[0],
-                    classroom: input.value[1],
-                };
+        showModal() {
+            this.modalStatus = true;
+        },
+        closeModal() {
+            this.modalStatus = false;
+        },
+        confirmedModal() {
+            if (this.selectedStudy === null) {
+                this.postStudy();
+            } else {
+                this.updateStudy();
+            }
+        },
+        postStudy() {
+            var inputJson = {
+                classroom_id: this.classroomSelectedId,
+                study_name: this.studyName,
+            };
 
-                this.$inertia.post(route("classrooms.store"), inputJson, {
-                    onSuccess: (page) => {
-                        this.$swal(
-                            "Berhasil Menyimpan",
-                            page.props.flash.message,
-                            "success"
+            this.$inertia.post(route("studies.store"), inputJson, {
+                onSuccess: (page) => {
+                    this.$swal(
+                        "Berhasil Menyimpan",
+                        page.props.flash.message,
+                        "success"
+                    );
+
+                    this.schoolSelectedId = null;
+                    this.classroomSelectedId = null;
+                    this.studyName = null;
+                    
+                    this.closeModal();
+                },
+                onError: (message) => {
+                    var errorsMessage = [];
+                    for (var key in this.$attrs["errors"]) {
+                        errorsMessage.push(
+                            `<li class="capitalize">
+                                ${this.$attrs["errors"][key]}
+                            </li>`
                         );
-                    },
-                    onError: (message) => {
-                        var errorsMessage = [];
-                        for (var key in this.$attrs["errors"]) {
-                            errorsMessage.push(
-                                `<li class="capitalize">
-                                        ${this.$attrs["errors"][key]}
-                                    </li>`
-                            );
-                        }
+                    }
 
-                        this.$swal(
-                            "Gagal menambah data",
-                            `<ul class="text-red-500 ">
+                    this.$swal(
+                        "Gagal menambah data",
+                        `<ul class="text-red-500 ">
                                     ${errorsMessage}
                                 </ul>`,
-                            "error"
-                        );
-                    },
-                });
+                        "error"
+                    );
+                },
             });
         },
-        editClassroom(classroom) {
+        editStudy(study) {
+            this.selectedStudy = study;
+            this.schoolSelectedId = study.classroom.school_id
+            this.classroomSelectedId = study.classroom.id
+            this.studyName = study.name
+            this.showModal();
+        },
+        updateStudy() {
+            var inputJson = {
+                classroom_id: this.classroomSelectedId,
+                study_name: this.studyName,
+            };
+
+            this.$inertia.put(route("studies.update", this.selectedStudy.id), inputJson, {
+                onSuccess: (page) => {
+                    this.$swal(
+                        "Berhasil Menyimpan",
+                        page.props.flash.message,
+                        "success"
+                    );
+
+                    this.schoolSelectedId = null;
+                    this.classroomSelectedId = null;
+                    this.studyName = null;
+                    this.selectedStudy = null;
+
+                    this.closeModal();
+                },
+                onError: (message) => {
+                    var errorsMessage = [];
+                    for (var key in this.$attrs["errors"]) {
+                        errorsMessage.push(
+                            `<li class="capitalize">
+                                        ${this.$attrs["errors"][key]}
+                                    </li>`
+                        );
+                    }
+
+                    this.$swal(
+                        "Gagal menambah data",
+                        `<ul class="text-red-500 ">
+                                    ${errorsMessage}
+                                </ul>`,
+                        "error"
+                    );
+                },
+            });
+        },
+        deleteStudy(study) {
             this.$swal({
-                title: "Edit Kelas",
-                html: `
-                <div class="grid grid-cols-3 gap-y-6 gap-x-1 justify-items-start place-items-center px-3 ">
-                    <label>Nama Kelas</label>
-                    <input 
-                        id="name" 
-                        type="text"
-                        value="${classroom.name}"
-                        placeholder="Masukkan Nama Kelas" 
-                        class="col-span-2 rounded-xl px-2 my-1 w-full"
-                    >
-                </div>
-                `,
+                title: "Anda yakin?",
+                text: `Anda akan menghapus ${study.name}?`,
+                icon: "warning",
                 showCloseButton: true,
                 showCancelButton: true,
                 reverseButtons: true,
-                preConfirm: () => {
-                    return [document.getElementById("name").value];
-                },
-            }).then((input) => {
-                var inputJson = {
-                    name: input.value[0],
-                };
-
-                this.$inertia.put(
-                    route("classrooms.update", classroom.id),
-                    inputJson,
-                    {
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$inertia.delete(route(`studies.destroy`, study.id), {
                         onSuccess: (page) => {
                             this.$swal(
-                                "Berhasil Menyimpan",
+                                "Berhasil Terhapus",
                                 page.props.flash.message,
                                 "success"
                             );
@@ -388,50 +476,7 @@ export default {
                                 "error"
                             );
                         },
-                    }
-                );
-            });
-        },
-        deleteClassroom(classroom) {
-            this.$swal({
-                title: "Anda yakin?",
-                text: `Anda akan menghapus ${classroom.name}?`,
-                icon: "warning",
-                showCloseButton: true,
-                showCancelButton: true,
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.$inertia.delete(
-                        route(`classrooms.destroy`, classroom.id),
-                        {
-                            onSuccess: (page) => {
-                                this.$swal(
-                                    "Berhasil Terhapus",
-                                    page.props.flash.message,
-                                    "success"
-                                );
-                            },
-                            onError: (message) => {
-                                var errorsMessage = [];
-                                for (var key in this.$attrs["errors"]) {
-                                    errorsMessage.push(
-                                        `<li class="capitalize">
-                                        ${this.$attrs["errors"][key]}
-                                    </li>`
-                                    );
-                                }
-
-                                this.$swal(
-                                    "Gagal menambah data",
-                                    `<ul class="text-red-500 ">
-                                    ${errorsMessage}
-                                </ul>`,
-                                    "error"
-                                );
-                            },
-                        }
-                    );
+                    });
                 }
             });
         },
