@@ -3,9 +3,6 @@
         <div class="py-8">
             <div class="mb-1 flex w-full flex-row justify-between sm:mb-0">
                 <div class="flex flex-wrap gap-2">
-                    <button @click="showModal" class="btn btn-primary">
-                        Tambah
-                    </button>
                 </div>
                 <div class="text-end">
                     <form
@@ -103,7 +100,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Ruang Kelas
+                                    Nama User
                                 </th>
                                 <th
                                     scope="col"
@@ -118,7 +115,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Nama Pelajaran
+                                    Email
                                 </th>
                                 <th
                                     scope="col"
@@ -133,7 +130,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Tanggal dibuat
+                                    Pelajaran
                                 </th>
                                 <th
                                     scope="col"
@@ -151,7 +148,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="study in studies.data" :key="study.id">
+                            <tr v-for="user in users.data" :key="user.id">
                                 <td
                                     class="
                                         border-b border-gray-200
@@ -160,7 +157,7 @@
                                         py-5
                                         text-sm
                                     "
-                                    v-html="study.id"
+                                    v-html="user.id"
                                 />
                                 <td
                                     class="
@@ -171,7 +168,7 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="study.classroom.school.name"
+                                    v-html="schools[user.school_id]"
                                 />
                                 <td
                                     class="
@@ -182,7 +179,18 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="study.classroom.name"
+                                    v-html="user.name"
+                                />
+                                <td
+                                    class="
+                                        border-b border-gray-200
+                                        bg-white
+                                        px-5
+                                        py-5
+                                        text-sm
+                                        lowercase
+                                    "
+                                    v-html="user.email"
                                 />
                                 <td
                                     class="
@@ -193,30 +201,13 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="study.name"
-                                />
-                                <td
-                                    class="
-                                        border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
-                                        text-sm
-                                    "
-                                    v-html="
-                                        new Date(
-                                            study.created_at
-                                        ).toLocaleString('ID-id', {
-                                            timezone: 'Asia/Jakarta',
-                                            weekday: 'long',
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                        })
-                                    "
-                                />
+                                >
+                                    <h5
+                                        v-for="study in user.teachs"
+                                        :key="study"
+                                        v-html="getStudyName(user.school_id, study.id)"
+                                    />
+                                </td>
                                 <td
                                     class="
                                         flex flex-row
@@ -226,10 +217,11 @@
                                         px-5
                                         py-5
                                         text-sm
+                                        h-full
                                     "
                                 >
                                     <button
-                                        @click="editStudy(study)"
+                                        @click="editUser(user)"
                                         class="
                                             text-blue-400
                                             hover:text-blue-900
@@ -237,22 +229,21 @@
                                     >
                                         Edit
                                     </button>
-                                    <button
-                                        @click="deleteStudy(study)"
-                                        class="text-red-400 hover:t ext-red-900"
-                                    >
-                                        Hapus
-                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <Pagination :links="studies.links" />
+                    <Pagination :links="users.links" />
                 </div>
             </div>
         </div>
     </div>
-    <CustomModal :show="modalStatus" @close="closeModal" @confirmed="confirmedModal">
+    <CustomModal
+        :show="modalStatus"
+        @close="closeModal"
+        @confirmed="confirmedModal"
+    >
+        <template #header>Edit Guru</template>
         <div
             class="
                 grid grid-cols-3
@@ -262,39 +253,79 @@
                 px-3
             "
         >
-            <label>Sekolah</label>
-            <select
-                v-model="schoolSelectedId"
-                :disabled="selectedStudy != null"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
+            <h2>Sekolah</h2>
+            <h2 class="col-span-2 capitalize" v-html="schools[selectedUser.school_id]" />
+            <h2>Nama User</h2>
+            <h2 class="col-span-2 capitalize" v-html="selectedUser.name"/>
+            <h2>Email User</h2>
+            <h2 class="col-span-2 capitalize" v-html="selectedUser.email"/>
+            <div
+                class="
+                    col-span-3
+                    w-full
+                    grid grid-cols-3
+                    justify-items-start
+                    place-items-center
+                "
             >
-                <option
-                    v-for="school in schools"
-                    :key="school"
-                    :value="school.id"
-                    v-html="school.name"
-                />
-            </select>
-            <label>Kelas</label>
-            <select
-                v-model="classroomSelectedId"
-                :disabled="selectedStudy != null"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
-            >
-                <option
-                    v-for="classroom in classrooms[schoolSelectedId]"
-                    :key="classroom"
-                    :value="classroom.id"
-                    v-html="classroom.name"
-                />
-            </select>
-            <label>Nama Pelajaran</label>
-            <input
-                v-model="studyName"
-                type="text"
-                placeholder="Masukkan Nama Pelajaran"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
-            />
+                <label>Pelajaran</label>
+                <div class="col-span-2 w-full grid grid-col-1">
+                    <select
+                        @change="addStudiesId($event)"
+                        class="rounded-xl px-2 my-1 w-full capitalize"
+                    >
+                        <option selected disabled></option>
+                        <optgroup
+                            v-for="classroom in studiesBySchool[selectedUser.school_id]"
+                            :key="classroom"
+                            :label="classroom.name"
+                        >
+                            <option
+                                v-for="study in classroom.studies"
+                                :key="study"
+                                :value="study.id"
+                                v-html="study.name"
+                                class="capitalize"
+                            />
+                        </optgroup>
+                    </select>
+                    <div class="flex flex-wrap gap-1">
+                        <span
+                            v-for="studyId in selectedUser.teachs"
+                            :key="studyId"
+                            class="
+                                inline-block
+                                rounded-full
+                                text-white
+                                bg-blue-500
+                                px-2
+                                py-1
+                                text-xs
+                                font-bold
+                                capitalize
+                            "
+                        >
+                            {{ getStudyName( selectedUser.school_id, studyId) }}
+                            <button @click="deleteStudiesId(studyId)">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4 inline"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </CustomModal>
 </template>
@@ -308,35 +339,25 @@ export default {
         return {
             searchQuery: "",
             modalStatus: false,
-            schoolSelectedId: null,
-            classroomSelectedId: null,
-            studyName: null,
-            selectedStudy: null,
+            selectedUser: null,
         };
     },
-    props: ["schools", "classrooms", "studies"],
+    props: [
+        "schools",
+        "users",
+        "classroomsBySchool",
+        "studiesBySchool",
+    ],
     components: {
         Pagination,
         CustomModal,
     },
-    computed: {
-        schoolsOptions() {
-            var schoolsOptions = "";
-            this.schools.forEach((school) => {
-                schoolsOptions += `<option value="${school.id}" class="capitalize">
-                        ${school.name}
-                    </option>`;
-            });
-
-            return schoolsOptions;
-        },
-    },
     methods: {
         search() {
             this.$inertia.get(
-                route("studies.index"),
+                route("users.index"),
                 { search: this.searchQuery },
-                { only: ["studies"], preserveState: true }
+                { only: ["users"], preserveState: true }
             );
         },
         showModal() {
@@ -344,145 +365,90 @@ export default {
         },
         closeModal() {
             this.modalStatus = false;
-            this.selectedStudy= null;
-            this.schoolSelectedId = null;
-            this.classroomSelectedId = null;
-            this.studyName = null;
+            this.selectedUser = null;
         },
         confirmedModal() {
-            if (this.selectedStudy === null) {
-                this.postStudy();
-            } else {
-                this.updateStudy();
+            this.updateUser();
+        },
+        addStudiesId(event) {
+            var id = Number(event.target.value);
+
+            if (! this.selectedUser.teachs.includes(id)) {
+                this.selectedUser.teachs.push(id);
             }
         },
-        postStudy() {
-            var inputJson = {
-                classroom_id: this.classroomSelectedId,
-                study_name: this.studyName,
-            };
-
-            this.$inertia.post(route("studies.store"), inputJson, {
-                onSuccess: (page) => {
-                    this.$swal(
-                        "Berhasil Menyimpan",
-                        page.props.flash.message,
-                        "success"
-                    );
-
-                    this.schoolSelectedId = null;
-                    this.classroomSelectedId = null;
-                    this.studyName = null;
-                    
-                    this.closeModal();
-                },
-                onError: (message) => {
-                    var errorsMessage = [];
-                    for (var key in this.$attrs["errors"]) {
-                        errorsMessage.push(
-                            `<li class="capitalize">
-                                ${this.$attrs["errors"][key]}
-                            </li>`
-                        );
-                    }
-
-                    this.$swal(
-                        "Gagal menambah data",
-                        `<ul class="text-red-500 ">
-                                    ${errorsMessage}
-                                </ul>`,
-                        "error"
-                    );
-                },
+        deleteStudiesId(studyId) {
+            var filtered = this.selectedUser.teachs.filter((id) => {
+                return id != studyId;
             });
+
+            this.selectedUser.teachs = filtered;
         },
-        editStudy(study) {
-            this.selectedStudy = study;
-            this.schoolSelectedId = study.classroom.school_id
-            this.classroomSelectedId = study.classroom.id
-            this.studyName = study.name
+        getStudyName(schoolId, studyId) {
+            var studyName;
+            this.studiesBySchool[schoolId].forEach((classroom) => {
+                classroom.studies.forEach((study) => {
+                    if (study.id == studyId) {
+                        studyName = classroom.name + " - " + study.name;
+                    }
+                });
+            });
+            return studyName;
+        },
+        editUser(user) {
+            this.selectedUser = Object.assign({}, user);
+            
+            var teachs = [];
+            this.selectedUser.teachs.forEach((study) => {
+                teachs.push(study.id);
+            })
+            this.selectedUser.teachs = teachs;
             this.showModal();
         },
-        updateStudy() {
+        updateUser() {
             var inputJson = {
                 classroom_id: this.classroomSelectedId,
-                study_name: this.studyName,
+                user_name: this.selectedUserName,
             };
 
-            this.$inertia.put(route("studies.update", this.selectedStudy.id), inputJson, {
-                onSuccess: (page) => {
-                    this.$swal(
-                        "Berhasil Menyimpan",
-                        page.props.flash.message,
-                        "success"
-                    );
-
-                    this.schoolSelectedId = null;
-                    this.classroomSelectedId = null;
-                    this.studyName = null;
-                    this.selectedStudy = null;
-
-                    this.closeModal();
-                },
-                onError: (message) => {
-                    var errorsMessage = [];
-                    for (var key in this.$attrs["errors"]) {
-                        errorsMessage.push(
-                            `<li class="capitalize">
-                                        ${this.$attrs["errors"][key]}
-                                    </li>`
+            this.$inertia.put(
+                route("users.update", this.selectedUser.id),
+                inputJson,
+                {
+                    onSuccess: (page) => {
+                        this.$swal(
+                            "Berhasil Menyimpan",
+                            page.props.flash.message,
+                            "success"
                         );
-                    }
 
-                    this.$swal(
-                        "Gagal menambah data",
-                        `<ul class="text-red-500 ">
-                                    ${errorsMessage}
-                                </ul>`,
-                        "error"
-                    );
-                },
-            });
-        },
-        deleteStudy(study) {
-            this.$swal({
-                title: "Anda yakin?",
-                text: `Anda akan menghapus ${study.name}?`,
-                icon: "warning",
-                showCloseButton: true,
-                showCancelButton: true,
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.$inertia.delete(route(`studies.destroy`, study.id), {
-                        onSuccess: (page) => {
-                            this.$swal(
-                                "Berhasil Terhapus",
-                                page.props.flash.message,
-                                "success"
-                            );
-                        },
-                        onError: (message) => {
-                            var errorsMessage = [];
-                            for (var key in this.$attrs["errors"]) {
-                                errorsMessage.push(
-                                    `<li class="capitalize">
+                        this.schoolSelectedId = null;
+                        this.classroomSelectedId = null;
+                        this.selectedUserName = null;
+                        this.selectedUser = null;
+
+                        this.closeModal();
+                    },
+                    onError: (message) => {
+                        var errorsMessage = [];
+                        for (var key in this.$attrs["errors"]) {
+                            errorsMessage.push(
+                                `<li class="capitalize">
                                         ${this.$attrs["errors"][key]}
                                     </li>`
-                                );
-                            }
+                            );
+                        }
 
-                            this.$swal(
-                                "Gagal menambah data",
-                                `<ul class="text-red-500 ">
+                        this.$swal(
+                            "Gagal menambah data",
+                            `<ul class="text-red-500 ">
                                     ${errorsMessage}
                                 </ul>`,
-                                "error"
-                            );
-                        },
-                    });
+                            "error"
+                        );
+                    },
                 }
-            });
+            );
         },
     },
 };

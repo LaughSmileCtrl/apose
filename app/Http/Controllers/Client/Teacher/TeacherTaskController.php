@@ -36,7 +36,7 @@ class TeacherTaskController extends Controller
 
         $students = $task->study()->find($studyId)
             ->classroom()->first()
-            ->users()->with('roles')->get()
+            ->students()->with('roles')->get()
             ->filter(function($user, $key) {
                 return $user->hasRole('student');
             });
@@ -71,7 +71,7 @@ class TeacherTaskController extends Controller
         
         $students = $task->study()->find($studyId)
             ->classroom()->first()
-            ->users()->with('roles')->get()
+            ->students()->with('roles')->get()
             ->filter(function($user, $key) {
                 return $user->hasRole('student');
             });

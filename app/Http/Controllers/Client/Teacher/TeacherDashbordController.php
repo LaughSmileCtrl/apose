@@ -14,37 +14,25 @@ class TeacherDashbordController extends Controller
 {
     public function index(Request $request)
     {
-        $user = $request->user();
+        $teacher = $request->user();
 
-        $classroomsCollect = Classroom::select('id', 'name')
-            ->whereHas('users', function($q, ) {
-                return $q->where('id', Auth::id());
-            })
+        $studies = $teacher->teachs()
+            ->limit(7)
+            ->with('classroom:id,name')
             ->get();
 
-        $i = 1;
-        foreach ($classroomsCollect as $classroom) {
-            foreach ($classroom->studies as $study) {
-                $classrooms[] = [
-                    'class_id' => $classroom->id,
-                    'class' => $classroom->name,
-                    'study_id' => $study->id,
-                    'study' => $study->name,
-                ];
+        if ($studies->count() <= 0) {
+            return redirect()->route('error-page', 
+                'Mohon Hubungi Admin Untuk Mengisi Kelas');
+        };
 
-                if ($i++ == 7)
-                    break;
-            }
-        }
-
-        $schoolId = $user->classrooms()->first()->school_id;
-        $school = School::select('name')
-            ->where('id', $schoolId)
-            ->first();
+        $school = $teacher->teachs()->first()
+            ->classroom
+            ->school;
 
         return Inertia::render('Teacher/Dashboard', [
             'school' => $school->name,
-            'classrooms' => $classrooms,
+            'studies' => $studies,
         ]);
     }
 }

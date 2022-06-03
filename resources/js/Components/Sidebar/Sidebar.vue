@@ -57,21 +57,17 @@
             <div
                 class="
                     md:block
-                    text-left
+                    text-center
                     md:pb-2
                     text-gray-600
                     mr-0
-                    inline-block
-                    whitespace-nowrap
                     text-sm
                     uppercase
                     font-bold
                     p-4
-                    px-0
                 "
-                to="/"
             >
-                Vue Notus
+                <h2>Aplikasi Pangajharan Online Sumenep</h2>
             </div>
             <!-- User -->
             <ul class="md:hidden items-center flex flex-wrap list-none">
@@ -190,7 +186,9 @@
                                 navClass(route().current('admin.dashboard'))
                             "
                         >
-                            <i class="fas fa-tv mr-2 text-sm"></i>
+                            <i
+                                class="fas fa-tv mr-2 text-sm text-center w-6"
+                            ></i>
                             Dashboard
                         </Link>
                     </li>
@@ -201,7 +199,15 @@
                             class="text-xs uppercase py-3 font-bold block"
                             :class="navClass(route().current('schools.index'))"
                         >
-                            <i class="fas fa-school mr-2 text-sm"></i>
+                            <i
+                                class="
+                                    fas
+                                    fa-school
+                                    mr-2
+                                    text-sm text-center
+                                    w-6
+                                "
+                            ></i>
                             Sekolah
                         </Link>
                     </li>
@@ -209,9 +215,19 @@
                         <Link
                             :href="route('classrooms.index')"
                             class="text-xs uppercase py-3 font-bold block"
-                            :class="navClass(route().current('classrooms.index'))"
+                            :class="
+                                navClass(route().current('classrooms.index'))
+                            "
                         >
-                            <i class="fas fa-chalkboard text-sm"></i>
+                            <i
+                                class="
+                                    fas
+                                    fa-chalkboard
+                                    mr-2
+                                    text-sm text-center
+                                    w-6
+                                "
+                            ></i>
                             Ruang Kelas
                         </Link>
                     </li>
@@ -221,8 +237,45 @@
                             class="text-xs uppercase py-3 font-bold block"
                             :class="navClass(route().current('studies.index'))"
                         >
-                            <i class="fas fa-book text-sm"></i>
+                            <i
+                                class="fas fa-book mr-2 text-sm text-center w-6"
+                            ></i>
                             Pelajaran
+                        </Link>
+                    </li>
+                    <li class="items-center">
+                        <Link
+                            :href="route('users.index')"
+                            class="text-xs uppercase py-3 font-bold block"
+                            :class="navClass(route().current('users.index'))"
+                        >
+                            <i
+                                class="
+                                    fas
+                                    fa-users
+                                    mr-2
+                                    text-sm text-center
+                                    w-6
+                                "
+                            ></i>
+                            Users
+                        </Link>
+                    </li>
+                    <li class="items-center">
+                        <Link
+                            :href="route('teachers.index')"
+                            class="text-xs uppercase py-3 font-bold block"
+                            :class="navClass(route().current('teachers.index'))"
+                        >
+                            <i
+                                class="
+                                    fas fa-chalkboard-teacher
+                                    mr-2
+                                    text-sm text-center
+                                    w-6
+                                "
+                            ></i>
+                            Guru
                         </Link>
                     </li>
                 </ul>

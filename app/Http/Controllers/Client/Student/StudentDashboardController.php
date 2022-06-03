@@ -13,7 +13,7 @@ class StudentDashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $classroom = $user->classrooms()
+        $classroom = $user->classroom()
             ->select('id', 'name', 'school_id')->first();
 
         $school = $classroom->school()->first();

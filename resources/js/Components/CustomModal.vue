@@ -11,7 +11,7 @@
         <div
             class="
                 fixed
-                top-1/3
+                top-[6rem]
                 left-0
                 md:left-1/3
                 grid

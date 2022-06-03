@@ -33,4 +33,9 @@ class Study extends Model
     {
         return $this->hasMany(Task::class);
     }
+
+    public function teacher()
+    {
+        return $this->belongsToMany(User::class, 'teacher_studies');
+    }
 }

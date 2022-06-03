@@ -177,12 +177,12 @@
                             "
                         >
                             <Link
-                                v-for="classroom in classrooms"
-                                :key="classroom"
+                                v-for="study in studies"
+                                :key="study"
                                 :href="
                                     route('teacher.classroom.show', [
-                                        classroom.class_id,
-                                        classroom.study_id,
+                                        study.classroom.id,
+                                        study.id,
                                     ])
                                 "
                                 class="
@@ -202,11 +202,11 @@
                                         font-semibold
                                         uppercase
                                     "
-                                    v-html="classroom.class"
+                                    v-html="study.classroom.name"
                                 />
                                 <h2
                                     class="text-center text-sm capitalize"
-                                    v-html="classroom.study"
+                                    v-html="study.name"
                                 />
                             </Link>
 
@@ -242,7 +242,7 @@ export default {
             showSideNav: false,
         };
     },
-    props: ["school", "classrooms"],
+    props: ["school", "studies"],
     components: {
         Link,
         Head,

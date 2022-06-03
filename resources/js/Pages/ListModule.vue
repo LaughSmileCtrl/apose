@@ -4,7 +4,10 @@
             <h2 class="text-xl font-semibold capitalize">
                 Materi {{ studyName }}
             </h2>
-            <div class="w-full flex justify-end my-8">
+            <div
+                v-if="$page.props.auth.user.roles[0].name == 'teacher'"
+                class="w-full flex justify-end my-8"
+            >
                 <button @click="showAddModule" class="btn btn-primary">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Classroom;
+use App\Models\Study;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
         $users[0]->assignRole('teacher');
         $users[1]->assignRole('student');
         
-        $users[0]->classrooms()->saveMany(Classroom::all());
-        $users[1]->classrooms()->save(Classroom::all()[0]);
+        $users[0]->teachs()->saveMany(Study::where('id', '<', '4')->get());
+        $users[1]->classroom()->save(Classroom::find(1));
     }
 }

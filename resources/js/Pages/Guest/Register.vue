@@ -15,7 +15,7 @@
             >
                 <h2 class="text-4xl capitalize">Selamat datang</h2>
                 <h2 class="my-4 text-2xl capitalize">
-                    Sumenep Online Elementary School
+                    aplikasi pangajharan online sumenep
                 </h2>
             </div>
             <div class="relative mx-8 -mt-32">

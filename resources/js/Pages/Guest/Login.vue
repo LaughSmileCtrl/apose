@@ -13,9 +13,9 @@
                     md:rounded-none
                 "
             >
-                <h2 class="text-4xl capitalize">Selamat datang</h2>
-                <h2 class="my-4 text-2xl capitalize">
-                    Sumenep Online Elementary School
+                <h2 class="text-4xl capitalize lg:text-center">Selamat datang</h2>
+                <h2 class="my-4 text-2xl capitalize lg:text-center">
+                    aplikasi pangajharan online sumenep
                 </h2>
             </div>
             <div class="relative mx-8 -mt-32">
@@ -182,12 +182,12 @@
                             >
                                 Login
                             </button>
-                            <div class="mb-12">
+                            <!-- <div class="mb-12">
                                 <h2 class="text-xs">
                                     Belum punya akun?
                                     <Link :href="route('register')" class="text-gray-500">Register</Link>
                                 </h2>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

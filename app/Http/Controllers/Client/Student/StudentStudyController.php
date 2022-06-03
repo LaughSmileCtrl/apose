@@ -13,7 +13,7 @@ class StudentStudyController extends Controller
 {
     public function index()
     {
-        $studies = Auth::user()->classrooms()->first()
+        $studies = Auth::user()->classroom()->first()
             ->studies()->select('id', 'name', 'conversation_url', 'icon_path')->get()
             ->map(function ($study, $key) {
                 $study->icon_path = Storage::url($study->icon_path);
@@ -27,7 +27,7 @@ class StudentStudyController extends Controller
 
     public function show($studyId)
     {
-        $study = Auth::user()->classrooms()->first()
+        $study = Auth::user()->classroom()->first()
             ->studies()->find($studyId);
 
         return Inertia::render('Student/DetailStudy', [

@@ -3,9 +3,6 @@
         <div class="py-8">
             <div class="mb-1 flex w-full flex-row justify-between sm:mb-0">
                 <div class="flex flex-wrap gap-2">
-                    <button @click="showModal" class="btn btn-primary">
-                        Tambah
-                    </button>
                 </div>
                 <div class="text-end">
                     <form
@@ -103,7 +100,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Ruang Kelas
+                                    Nama User
                                 </th>
                                 <th
                                     scope="col"
@@ -118,7 +115,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Nama Pelajaran
+                                    Email
                                 </th>
                                 <th
                                     scope="col"
@@ -133,7 +130,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Tanggal dibuat
+                                    Pelajaran
                                 </th>
                                 <th
                                     scope="col"
@@ -151,7 +148,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="study in studies.data" :key="study.id">
+                            <tr v-for="user in users.data" :key="user.id">
                                 <td
                                     class="
                                         border-b border-gray-200
@@ -160,7 +157,7 @@
                                         py-5
                                         text-sm
                                     "
-                                    v-html="study.id"
+                                    v-html="user.id"
                                 />
                                 <td
                                     class="
@@ -171,7 +168,7 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="study.classroom.school.name"
+                                    v-html="schools[user.school_id]"
                                 />
                                 <td
                                     class="
@@ -182,7 +179,18 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="study.classroom.name"
+                                    v-html="user.name"
+                                />
+                                <td
+                                    class="
+                                        border-b border-gray-200
+                                        bg-white
+                                        px-5
+                                        py-5
+                                        text-sm
+                                        lowercase
+                                    "
+                                    v-html="user.email"
                                 />
                                 <td
                                     class="
@@ -193,30 +201,14 @@
                                         text-sm
                                         capitalize
                                     "
-                                    v-html="study.name"
-                                />
-                                <td
-                                    class="
-                                        border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
-                                        text-sm
-                                    "
-                                    v-html="
-                                        new Date(
-                                            study.created_at
-                                        ).toLocaleString('ID-id', {
-                                            timezone: 'Asia/Jakarta',
-                                            weekday: 'long',
-                                            year: 'numeric',
-                                            month: 'long',
-                                            day: 'numeric',
-                                            hour: 'numeric',
-                                            minute: 'numeric',
-                                        })
-                                    "
-                                />
+                                >
+                                    <h5
+                                        v-for="study in user.teachs"
+                                        :key="study"
+                                    >
+                                    {{ study.classroom.name }} - {{ study.name }}
+                                    </h5>
+                                </td>
                                 <td
                                     class="
                                         flex flex-row
@@ -226,19 +218,20 @@
                                         px-5
                                         py-5
                                         text-sm
+                                        h-full
                                     "
                                 >
-                                    <button
-                                        @click="editStudy(study)"
+                                    <!-- <button
+                                        @click="editUser(user)"
                                         class="
                                             text-blue-400
                                             hover:text-blue-900
                                         "
                                     >
                                         Edit
-                                    </button>
+                                    </button> -->
                                     <button
-                                        @click="deleteStudy(study)"
+                                        @click="deleteUser(user)"
                                         class="text-red-400 hover:t ext-red-900"
                                     >
                                         Hapus
@@ -247,12 +240,17 @@
                             </tr>
                         </tbody>
                     </table>
-                    <Pagination :links="studies.links" />
+                    <Pagination :links="users.links" />
                 </div>
             </div>
         </div>
     </div>
-    <CustomModal :show="modalStatus" @close="closeModal" @confirmed="confirmedModal">
+    <CustomModal
+        :show="modalStatus"
+        @close="closeModal"
+        @confirmed="confirmedModal"
+    >
+        <template #header>Tambah User Baru</template>
         <div
             class="
                 grid grid-cols-3
@@ -264,35 +262,148 @@
         >
             <label>Sekolah</label>
             <select
-                v-model="schoolSelectedId"
-                :disabled="selectedStudy != null"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
+                @change="resetSelectClassroom"
+                v-model="user.schoolId"
+                :disabled="selectedUser != null"
+                class="col-span-2 rounded-xl px-2 my-1 w-full uppercase"
             >
                 <option
-                    v-for="school in schools"
-                    :key="school"
-                    :value="school.id"
-                    v-html="school.name"
+                    v-for="(school, id) in schools"
+                    :key="id"
+                    :value="id"
+                    v-html="school"
+                    class="capitalize"
                 />
             </select>
-            <label>Kelas</label>
+            <label>Role</label>
             <select
-                v-model="classroomSelectedId"
-                :disabled="selectedStudy != null"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
+                @change="resetSelectClassroom"
+                v-model="user.role"
+                :disabled="selectedUser != null"
+                class="col-span-2 rounded-xl px-2 my-1 w-full capitalize"
             >
                 <option
-                    v-for="classroom in classrooms[schoolSelectedId]"
-                    :key="classroom"
-                    :value="classroom.id"
-                    v-html="classroom.name"
+                    v-for="(role, id) in roles"
+                    :key="id"
+                    v-html="role"
+                    class="capitalize"
                 />
             </select>
-            <label>Nama Pelajaran</label>
+            <div
+                v-if="user.role === 'student'"
+                class="
+                    col-span-3
+                    w-full
+                    grid grid-cols-3
+                    justify-items-start
+                    place-items-center
+                "
+            >
+                <label>Kelas</label>
+                <select
+                    @change="resetSelectClassroom"
+                    v-model="user.classroomId"
+                    :disabled="selectedUser != null"
+                    class="col-span-2 rounded-xl px-2 my-1 w-full capitalize"
+                >
+                    <option
+                        v-for="(classroom, id) in classroomsBySchool[
+                            user.schoolId
+                        ]"
+                        :key="id"
+                        :value="classroom.id"
+                        v-html="classroom.name"
+                        class="capitalize"
+                    />
+                </select>
+            </div>
+            <div
+                v-if="user.role === 'teacher'"
+                class="
+                    col-span-3
+                    w-full
+                    grid grid-cols-3
+                    justify-items-start
+                    place-items-center
+                "
+            >
+                <label>Pelajaran</label>
+                <div class="col-span-2 w-full grid grid-col-1">
+                    <select
+                        @change="addStudiesId($event)"
+                        :disabled="selectedUser != null"
+                        class="rounded-xl px-2 my-1 w-full capitalize"
+                    >
+                        <option selected disabled></option>
+                        <optgroup
+                            v-for="classroom in studiesBySchool[user.schoolId]"
+                            :key="classroom"
+                            :label="classroom.name"
+                        >
+                            <option
+                                v-for="study in classroom.studies"
+                                :key="study"
+                                :value="study.id"
+                                v-html="study.name"
+                                class="capitalize"
+                            />
+                        </optgroup>
+                    </select>
+                    <div class="flex flex-wrap gap-1">
+                        <span
+                            v-for="studyId in user.studiesId"
+                            :key="studyId"
+                            class="
+                                inline-block
+                                rounded-full
+                                text-white
+                                bg-blue-500
+                                px-2
+                                py-1
+                                text-xs
+                                font-bold
+                            "
+                        >
+                            {{ getStudyName(studyId) }}
+                            <button @click="deleteStudiesId(studyId)">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-4 w-4 inline"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <label>Nama User</label>
             <input
-                v-model="studyName"
+                v-model="user.name"
                 type="text"
-                placeholder="Masukkan Nama Pelajaran"
+                placeholder="Masukkan Nama user"
+                class="col-span-2 rounded-xl px-2 my-1 w-full"
+            />
+            <label>Email User</label>
+            <input
+                v-model="user.email"
+                type="email"
+                placeholder="Masukkan Email"
+                class="col-span-2 rounded-xl px-2 my-1 w-full"
+            />
+            <label>Pasword</label>
+            <input
+                v-model="user.password"
+                type="text"
+                placeholder="Masukkan Password"
                 class="col-span-2 rounded-xl px-2 my-1 w-full"
             />
         </div>
@@ -308,35 +419,25 @@ export default {
         return {
             searchQuery: "",
             modalStatus: false,
-            schoolSelectedId: null,
-            classroomSelectedId: null,
-            studyName: null,
-            selectedStudy: null,
+            selectedUser: null,
         };
     },
-    props: ["schools", "classrooms", "studies"],
+    props: [
+        "schools",
+        "users",
+        "classroomsBySchool",
+        "studiesBySchool",
+    ],
     components: {
         Pagination,
         CustomModal,
     },
-    computed: {
-        schoolsOptions() {
-            var schoolsOptions = "";
-            this.schools.forEach((school) => {
-                schoolsOptions += `<option value="${school.id}" class="capitalize">
-                        ${school.name}
-                    </option>`;
-            });
-
-            return schoolsOptions;
-        },
-    },
     methods: {
         search() {
             this.$inertia.get(
-                route("studies.index"),
+                route("users.index"),
                 { search: this.searchQuery },
-                { only: ["studies"], preserveState: true }
+                { only: ["users"], preserveState: true }
             );
         },
         showModal() {
@@ -344,145 +445,82 @@ export default {
         },
         closeModal() {
             this.modalStatus = false;
-            this.selectedStudy= null;
-            this.schoolSelectedId = null;
-            this.classroomSelectedId = null;
-            this.studyName = null;
+            this.selectedUser = null;
         },
         confirmedModal() {
-            if (this.selectedStudy === null) {
-                this.postStudy();
-            } else {
-                this.updateStudy();
+            this.updateUser();
+        },
+        addStudiesId(event) {
+            if (! this.user.studiesId.includes(event.target.value)) {
+                this.user.studiesId.push(event.target.value);
             }
         },
-        postStudy() {
-            var inputJson = {
-                classroom_id: this.classroomSelectedId,
-                study_name: this.studyName,
-            };
-
-            this.$inertia.post(route("studies.store"), inputJson, {
-                onSuccess: (page) => {
-                    this.$swal(
-                        "Berhasil Menyimpan",
-                        page.props.flash.message,
-                        "success"
-                    );
-
-                    this.schoolSelectedId = null;
-                    this.classroomSelectedId = null;
-                    this.studyName = null;
-                    
-                    this.closeModal();
-                },
-                onError: (message) => {
-                    var errorsMessage = [];
-                    for (var key in this.$attrs["errors"]) {
-                        errorsMessage.push(
-                            `<li class="capitalize">
-                                ${this.$attrs["errors"][key]}
-                            </li>`
-                        );
-                    }
-
-                    this.$swal(
-                        "Gagal menambah data",
-                        `<ul class="text-red-500 ">
-                                    ${errorsMessage}
-                                </ul>`,
-                        "error"
-                    );
-                },
+        deleteStudiesId(studyId) {
+            var filtered = this.user.studiesId.filter((id) => {
+                return id != studyId;
             });
+
+            this.user.studiesId = filtered;
         },
-        editStudy(study) {
-            this.selectedStudy = study;
-            this.schoolSelectedId = study.classroom.school_id
-            this.classroomSelectedId = study.classroom.id
-            this.studyName = study.name
+        getStudyName(studyId) {
+            var studyName;
+            this.studiesBySchool[this.user.schoolId].forEach((classroom) => {
+                classroom.studies.forEach((study) => {
+                    if (study.id == studyId) {
+                        studyName = study.name;
+                    }
+                });
+            });
+            return studyName;
+        },
+        editUser(user) {
+            this.selectedUser = user;
             this.showModal();
         },
-        updateStudy() {
+        updateUser() {
             var inputJson = {
                 classroom_id: this.classroomSelectedId,
-                study_name: this.studyName,
+                user_name: this.userName,
             };
 
-            this.$inertia.put(route("studies.update", this.selectedStudy.id), inputJson, {
-                onSuccess: (page) => {
-                    this.$swal(
-                        "Berhasil Menyimpan",
-                        page.props.flash.message,
-                        "success"
-                    );
-
-                    this.schoolSelectedId = null;
-                    this.classroomSelectedId = null;
-                    this.studyName = null;
-                    this.selectedStudy = null;
-
-                    this.closeModal();
-                },
-                onError: (message) => {
-                    var errorsMessage = [];
-                    for (var key in this.$attrs["errors"]) {
-                        errorsMessage.push(
-                            `<li class="capitalize">
-                                        ${this.$attrs["errors"][key]}
-                                    </li>`
+            this.$inertia.put(
+                route("users.update", this.selectedUser.id),
+                inputJson,
+                {
+                    onSuccess: (page) => {
+                        this.$swal(
+                            "Berhasil Menyimpan",
+                            page.props.flash.message,
+                            "success"
                         );
-                    }
 
-                    this.$swal(
-                        "Gagal menambah data",
-                        `<ul class="text-red-500 ">
-                                    ${errorsMessage}
-                                </ul>`,
-                        "error"
-                    );
-                },
-            });
-        },
-        deleteStudy(study) {
-            this.$swal({
-                title: "Anda yakin?",
-                text: `Anda akan menghapus ${study.name}?`,
-                icon: "warning",
-                showCloseButton: true,
-                showCancelButton: true,
-                reverseButtons: true,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.$inertia.delete(route(`studies.destroy`, study.id), {
-                        onSuccess: (page) => {
-                            this.$swal(
-                                "Berhasil Terhapus",
-                                page.props.flash.message,
-                                "success"
-                            );
-                        },
-                        onError: (message) => {
-                            var errorsMessage = [];
-                            for (var key in this.$attrs["errors"]) {
-                                errorsMessage.push(
-                                    `<li class="capitalize">
+                        this.schoolSelectedId = null;
+                        this.classroomSelectedId = null;
+                        this.userName = null;
+                        this.selectedUser = null;
+
+                        this.closeModal();
+                    },
+                    onError: (message) => {
+                        var errorsMessage = [];
+                        for (var key in this.$attrs["errors"]) {
+                            errorsMessage.push(
+                                `<li class="capitalize">
                                         ${this.$attrs["errors"][key]}
                                     </li>`
-                                );
-                            }
+                            );
+                        }
 
-                            this.$swal(
-                                "Gagal menambah data",
-                                `<ul class="text-red-500 ">
+                        this.$swal(
+                            "Gagal menambah data",
+                            `<ul class="text-red-500 ">
                                     ${errorsMessage}
                                 </ul>`,
-                                "error"
-                            );
-                        },
-                    });
+                            "error"
+                        );
+                    },
                 }
-            });
+            );
         },
     },
 };

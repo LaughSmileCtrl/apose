@@ -13,8 +13,8 @@
                 p-6
             "
         >
-            <h2 class="text-xl text-center font-light">
-                Sumenep High School Online Learning
+            <h2 class="text-xl text-center font-light capitalize w-fu">
+                Aplikasi Pangajharan Online Sumenep
             </h2>
             <hr class="h-[2px] bg-blue-100 my-4 mx-3" />
             <button @click="logout" class="flex flex-row justify-between p-2 w-full">

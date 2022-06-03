@@ -16,7 +16,7 @@ class TeacherClassroomController extends Controller
     public function index(Request $request)
     {
         $classroomsCollect = Classroom::select('id', 'name')
-            ->whereHas('users', function($q, ) {
+            ->whereHas('students', function($q, ) {
                 return $q->where('id', Auth::id());
             })
             ->get();
@@ -37,13 +37,10 @@ class TeacherClassroomController extends Controller
         ]);
     }
 
-    public function show($id, $studyId) 
+    public function show($classroomid, $studyId) 
     {
-        $study = Auth::user()->classrooms()
-            ->where('id', $id)
-            ->first()
-            ->studies()
-            ->where('id', $studyId)
+        $study = Classroom::find($classroomid)
+            ->studies()->where('id', $studyId)
             ->first();
 
         if ($study === null) {

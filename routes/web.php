@@ -5,6 +5,8 @@ use App\Http\Controllers\Admin\SuperAdminClassroomController;
 use App\Http\Controllers\Admin\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\SuperAdminSchoolController;
 use App\Http\Controllers\Admin\SuperAdminStudyController;
+use App\Http\Controllers\Admin\SuperAdminTeacherController;
+use App\Http\Controllers\Admin\SuperAdminUserController;
 use App\Http\Controllers\Client\Student\StudentDashboardController;
 use App\Http\Controllers\Client\Student\StudentModuleController;
 use App\Http\Controllers\Client\Student\StudentStudyController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\Client\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Client\Teacher\TeacherConversationController;
 use App\Http\Controllers\Client\Teacher\TeacherModuleController;
 use App\Http\Controllers\Client\Teacher\TeacherTaskController;
+use App\Http\Controllers\ErrorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -34,7 +37,7 @@ Route::get('/', function () {
 
 Route::name('teacher.')
     ->prefix('/teacher')
-    ->middleware(['auth', 'verified', 'teacher'])
+    ->middleware(['auth', 'verified', 'role:teacher'])
     ->group(function () {
         Route::get('/dashboard', [TeacherDashbordController::class, 'index'])
             ->name('dashboard');
@@ -80,7 +83,7 @@ Route::name('teacher.')
 
 Route::name('student.')
     ->prefix('/student')
-    ->middleware(['auth', 'verified', 'student'])
+    ->middleware(['auth', 'verified', 'role:student'])
     ->group(function () {
         Route::get('/dashboard', [StudentDashboardController::class, 'index'])
             ->name('dashboard');
@@ -111,5 +114,9 @@ Route::get('/admin/dashboard', [SuperAdminDashboardController::class, 'index'])
 Route::resource('schools', SuperAdminSchoolController::class);
 Route::resource('classrooms', SuperAdminClassroomController::class);
 Route::resource('studies', SuperAdminStudyController::class);
+Route::resource('users', SuperAdminUserController::class);
+Route::resource('teachers', SuperAdminTeacherController::class);
+
+Route::get('/error/{message}', [ErrorController::class, 'index'])->name('error-page');
 
 require __DIR__ . '/auth.php';
