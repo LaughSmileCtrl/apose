@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classroom;
+use App\Models\ClassroomStudent;
 use App\Models\School;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Role;
 
-class SuperAdminTeacherController extends Controller
+class SuperAdminStudentController extends Controller
 {
     public function index(Request $request)
     {
@@ -21,26 +21,22 @@ class SuperAdminTeacherController extends Controller
                     ->orWhere('email', 'LIKE', '%'.$search.'%')
                     ->orWhere('id', $search);
             })
-            ->role('teacher')
-            ->with(['teachs:id'])
+            ->role('student')
+            ->with([
+                'classroom:classrooms.id,name'
+            ])
             ->paginate(50);
     
         $schools = School::select('id', 'name')
             ->pluck('name', 'id');
         
-        $studiesBySchool = School::select('id')
-            ->with(['classrooms:id,name,school_id',
-                    'classrooms.studies:id,name,classroom_id'
-            ])
-            ->get()
-            ->pluck('classrooms', 'id')
-            ->toArray();
+        $classroomsBySchool = School::with('classrooms:id,name,school_id')->get()
+            ->pluck('classrooms', 'id');
 
-
-        return Inertia::render('Admin/Teacher/Teacher', [
+        return Inertia::render('Admin/Student/Student', [
             'users' => $users,
             'schools' => $schools,
-            'studiesBySchool' => $studiesBySchool,
+            'classroomsBySchool' => $classroomsBySchool,
         ]);
     }
 
@@ -48,11 +44,13 @@ class SuperAdminTeacherController extends Controller
     {
         $user = User::find($user);
 
-        $user->teachs()->sync($request->teachs);
+        ClassroomStudent::updateOrCreate(
+            ['user_id' => $user->id],
+            ['classroom_id' => $request->classroom]
+        );
 
         return back()->with([
             'message' => $user->name.' berhasil diatur',
         ]);
     }
-
 }

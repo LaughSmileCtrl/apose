@@ -51,8 +51,16 @@ class User extends Authenticatable
 
     public function classroom()
     {
-        return $this->belongsToMany(Classroom::class, 'student_classrooms');
+        return $this->hasOneThrough(
+            Classroom::class, 
+            ClassroomStudent::class,
+            'user_id',
+            'id',
+            'id',
+            'classroom_id'
+        );
     }
+
 
     public function teachs() {
         return $this->belongsToMany(Study::class, 'teacher_studies');

@@ -4,13 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 
 class Classroom extends Model
 {
-    use HasFactory;
+    use SoftDeletes, CascadeSoftDeletes, HasFactory;
 
     protected $fillable = [
         'name',
+    ];
+
+    protected $cascadeDeletes = [
+        'studies',
     ];
     
     public function school()
@@ -20,7 +26,7 @@ class Classroom extends Model
 
     public function students()
     {
-        return $this->belongsToMany(User::class, 'student_classrooms');
+        return $this->belongsToMany(User::class, 'classroom_students');
     }
 
     public function studies()

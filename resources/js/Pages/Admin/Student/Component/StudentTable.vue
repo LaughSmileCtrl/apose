@@ -2,8 +2,7 @@
     <div class="container mx-auto w-full px-4 sm:px-8">
         <div class="py-8">
             <div class="mb-1 flex w-full flex-row justify-between sm:mb-0">
-                <div class="flex flex-wrap gap-2">
-                </div>
+                <div class="flex flex-wrap gap-2"></div>
                 <div class="text-end">
                     <form
                         class="
@@ -85,7 +84,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Nama Sekolah
+                                    Sekolah
                                 </th>
                                 <th
                                     scope="col"
@@ -100,7 +99,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Nama User
+                                    Nama
                                 </th>
                                 <th
                                     scope="col"
@@ -130,7 +129,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Pelajaran
+                                    Kelas
                                 </th>
                                 <th
                                     scope="col"
@@ -202,17 +201,13 @@
                                         capitalize
                                     "
                                 >
-                                    <h5
-                                        v-for="study in user.teachs"
-                                        :key="study"
-                                    >
-                                    {{ study.classroom.name }} - {{ study.name }}
-                                    </h5>
+                                    <p
+                                        v-if="user.classroom"
+                                        v-html="user.classroom.name"
+                                    />
                                 </td>
                                 <td
                                     class="
-                                        flex flex-row
-                                        gap-2
                                         border-b border-gray-200
                                         bg-white
                                         px-5
@@ -221,21 +216,17 @@
                                         h-full
                                     "
                                 >
-                                    <!-- <button
-                                        @click="editUser(user)"
-                                        class="
-                                            text-blue-400
-                                            hover:text-blue-900
-                                        "
-                                    >
-                                        Edit
-                                    </button> -->
-                                    <button
-                                        @click="deleteUser(user)"
-                                        class="text-red-400 hover:t ext-red-900"
-                                    >
-                                        Hapus
-                                    </button>
+                                    <div class="flex flex-row gap-2">
+                                        <button
+                                            @click="editUser(user)"
+                                            class="
+                                                text-blue-400
+                                                hover:text-blue-900
+                                            "
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -260,37 +251,16 @@
                 px-3
             "
         >
-            <label>Sekolah</label>
-            <select
-                @change="resetSelectClassroom"
-                v-model="user.schoolId"
-                :disabled="selectedUser != null"
-                class="col-span-2 rounded-xl px-2 my-1 w-full uppercase"
-            >
-                <option
-                    v-for="(school, id) in schools"
-                    :key="id"
-                    :value="id"
-                    v-html="school"
-                    class="capitalize"
-                />
-            </select>
-            <label>Role</label>
-            <select
-                @change="resetSelectClassroom"
-                v-model="user.role"
-                :disabled="selectedUser != null"
-                class="col-span-2 rounded-xl px-2 my-1 w-full capitalize"
-            >
-                <option
-                    v-for="(role, id) in roles"
-                    :key="id"
-                    v-html="role"
-                    class="capitalize"
-                />
-            </select>
+            <h2>Sekolah</h2>
+            <h2
+                class="col-span-2 capitalize"
+                v-html="schools[selectedUser.school_id]"
+            />
+            <h2>Nama User</h2>
+            <h2 class="col-span-2 capitalize" v-html="selectedUser.name" />
+            <h2>Email User</h2>
+            <h2 class="col-span-2 capitalize" v-html="selectedUser.email" />
             <div
-                v-if="user.role === 'student'"
                 class="
                     col-span-3
                     w-full
@@ -302,13 +272,12 @@
                 <label>Kelas</label>
                 <select
                     @change="resetSelectClassroom"
-                    v-model="user.classroomId"
-                    :disabled="selectedUser != null"
+                    v-model="selectedUser.classroom"
                     class="col-span-2 rounded-xl px-2 my-1 w-full capitalize"
                 >
                     <option
                         v-for="(classroom, id) in classroomsBySchool[
-                            user.schoolId
+                            selectedUser.school_id
                         ]"
                         :key="id"
                         :value="classroom.id"
@@ -317,95 +286,6 @@
                     />
                 </select>
             </div>
-            <div
-                v-if="user.role === 'teacher'"
-                class="
-                    col-span-3
-                    w-full
-                    grid grid-cols-3
-                    justify-items-start
-                    place-items-center
-                "
-            >
-                <label>Pelajaran</label>
-                <div class="col-span-2 w-full grid grid-col-1">
-                    <select
-                        @change="addStudiesId($event)"
-                        :disabled="selectedUser != null"
-                        class="rounded-xl px-2 my-1 w-full capitalize"
-                    >
-                        <option selected disabled></option>
-                        <optgroup
-                            v-for="classroom in studiesBySchool[user.schoolId]"
-                            :key="classroom"
-                            :label="classroom.name"
-                        >
-                            <option
-                                v-for="study in classroom.studies"
-                                :key="study"
-                                :value="study.id"
-                                v-html="study.name"
-                                class="capitalize"
-                            />
-                        </optgroup>
-                    </select>
-                    <div class="flex flex-wrap gap-1">
-                        <span
-                            v-for="studyId in user.studiesId"
-                            :key="studyId"
-                            class="
-                                inline-block
-                                rounded-full
-                                text-white
-                                bg-blue-500
-                                px-2
-                                py-1
-                                text-xs
-                                font-bold
-                            "
-                        >
-                            {{ getStudyName(studyId) }}
-                            <button @click="deleteStudiesId(studyId)">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="h-4 w-4 inline"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <label>Nama User</label>
-            <input
-                v-model="user.name"
-                type="text"
-                placeholder="Masukkan Nama user"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
-            />
-            <label>Email User</label>
-            <input
-                v-model="user.email"
-                type="email"
-                placeholder="Masukkan Email"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
-            />
-            <label>Pasword</label>
-            <input
-                v-model="user.password"
-                type="text"
-                placeholder="Masukkan Password"
-                class="col-span-2 rounded-xl px-2 my-1 w-full"
-            />
         </div>
     </CustomModal>
 </template>
@@ -422,12 +302,7 @@ export default {
             selectedUser: null,
         };
     },
-    props: [
-        "schools",
-        "users",
-        "classroomsBySchool",
-        "studiesBySchool",
-    ],
+    props: ["schools", "users", "classroomsBySchool"],
     components: {
         Pagination,
         CustomModal,
@@ -435,7 +310,7 @@ export default {
     methods: {
         search() {
             this.$inertia.get(
-                route("users.index"),
+                route("students.index"),
                 { search: this.searchQuery },
                 { only: ["users"], preserveState: true }
             );
@@ -451,7 +326,7 @@ export default {
             this.updateUser();
         },
         addStudiesId(event) {
-            if (! this.user.studiesId.includes(event.target.value)) {
+            if (!this.user.studiesId.includes(event.target.value)) {
                 this.user.studiesId.push(event.target.value);
             }
         },
@@ -462,29 +337,20 @@ export default {
 
             this.user.studiesId = filtered;
         },
-        getStudyName(studyId) {
-            var studyName;
-            this.studiesBySchool[this.user.schoolId].forEach((classroom) => {
-                classroom.studies.forEach((study) => {
-                    if (study.id == studyId) {
-                        studyName = study.name;
-                    }
-                });
-            });
-            return studyName;
-        },
         editUser(user) {
-            this.selectedUser = user;
+            this.selectedUser = Object.assign({}, user);
+            if (user.classroom) {
+                this.selectedUser.classroom = user.classroom.id;
+            }
             this.showModal();
         },
         updateUser() {
             var inputJson = {
-                classroom_id: this.classroomSelectedId,
-                user_name: this.userName,
+                classroom: this.selectedUser.classroom,
             };
 
             this.$inertia.put(
-                route("users.update", this.selectedUser.id),
+                route("students.update", this.selectedUser.id),
                 inputJson,
                 {
                     onSuccess: (page) => {

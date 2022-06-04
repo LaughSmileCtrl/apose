@@ -2,8 +2,7 @@
     <div class="container mx-auto w-full px-4 sm:px-8">
         <div class="py-8">
             <div class="mb-1 flex w-full flex-row justify-between sm:mb-0">
-                <div class="flex flex-wrap gap-2">
-                </div>
+                <div class="flex flex-wrap gap-2"></div>
                 <div class="text-end">
                     <form
                         class="
@@ -85,7 +84,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Nama Sekolah
+                                    Sekolah
                                 </th>
                                 <th
                                     scope="col"
@@ -100,7 +99,7 @@
                                         text-gray-800
                                     "
                                 >
-                                    Nama User
+                                    Nama
                                 </th>
                                 <th
                                     scope="col"
@@ -202,33 +201,39 @@
                                         capitalize
                                     "
                                 >
-                                    <h5
-                                        v-for="study in user.teachs"
-                                        :key="study"
-                                        v-html="getStudyName(user.school_id, study.id)"
-                                    />
+                                    <ul class="list-disc list-outside">
+                                        <li
+                                            v-for="study in user.teachs"
+                                            :key="study"
+                                            v-html="
+                                                getStudyName(
+                                                    user.school_id,
+                                                    study.id
+                                                )
+                                            "
+                                        />
+                                    </ul>
                                 </td>
                                 <td
                                     class="
-                                        flex flex-row
-                                        gap-2
                                         border-b border-gray-200
                                         bg-white
                                         px-5
                                         py-5
                                         text-sm
-                                        h-full
                                     "
                                 >
-                                    <button
-                                        @click="editUser(user)"
-                                        class="
-                                            text-blue-400
-                                            hover:text-blue-900
-                                        "
-                                    >
-                                        Edit
-                                    </button>
+                                    <div class="flex flex-row gap-2">
+                                        <button
+                                            @click="editUser(user)"
+                                            class="
+                                                text-blue-400
+                                                hover:text-blue-900
+                                            "
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -254,11 +259,14 @@
             "
         >
             <h2>Sekolah</h2>
-            <h2 class="col-span-2 capitalize" v-html="schools[selectedUser.school_id]" />
+            <h2
+                class="col-span-2 capitalize"
+                v-html="schools[selectedUser.school_id]"
+            />
             <h2>Nama User</h2>
-            <h2 class="col-span-2 capitalize" v-html="selectedUser.name"/>
+            <h2 class="col-span-2 capitalize" v-html="selectedUser.name" />
             <h2>Email User</h2>
-            <h2 class="col-span-2 capitalize" v-html="selectedUser.email"/>
+            <h2 class="col-span-2 capitalize" v-html="selectedUser.email" />
             <div
                 class="
                     col-span-3
@@ -276,7 +284,9 @@
                     >
                         <option selected disabled></option>
                         <optgroup
-                            v-for="classroom in studiesBySchool[selectedUser.school_id]"
+                            v-for="classroom in studiesBySchool[
+                                selectedUser.school_id
+                            ]"
                             :key="classroom"
                             :label="classroom.name"
                         >
@@ -305,7 +315,7 @@
                                 capitalize
                             "
                         >
-                            {{ getStudyName( selectedUser.school_id, studyId) }}
+                            {{ getStudyName(selectedUser.school_id, studyId) }}
                             <button @click="deleteStudiesId(studyId)">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -342,12 +352,7 @@ export default {
             selectedUser: null,
         };
     },
-    props: [
-        "schools",
-        "users",
-        "classroomsBySchool",
-        "studiesBySchool",
-    ],
+    props: ["schools", "users", "classroomsBySchool", "studiesBySchool"],
     components: {
         Pagination,
         CustomModal,
@@ -355,7 +360,7 @@ export default {
     methods: {
         search() {
             this.$inertia.get(
-                route("users.index"),
+                route("teachers.index"),
                 { search: this.searchQuery },
                 { only: ["users"], preserveState: true }
             );
@@ -373,7 +378,7 @@ export default {
         addStudiesId(event) {
             var id = Number(event.target.value);
 
-            if (! this.selectedUser.teachs.includes(id)) {
+            if (!this.selectedUser.teachs.includes(id)) {
                 this.selectedUser.teachs.push(id);
             }
         },
@@ -397,22 +402,21 @@ export default {
         },
         editUser(user) {
             this.selectedUser = Object.assign({}, user);
-            
+
             var teachs = [];
             this.selectedUser.teachs.forEach((study) => {
                 teachs.push(study.id);
-            })
+            });
             this.selectedUser.teachs = teachs;
             this.showModal();
         },
         updateUser() {
             var inputJson = {
-                classroom_id: this.classroomSelectedId,
-                user_name: this.selectedUserName,
+                teachs: this.selectedUser.teachs,
             };
 
             this.$inertia.put(
-                route("users.update", this.selectedUser.id),
+                route("teachers.update", this.selectedUser.id),
                 inputJson,
                 {
                     onSuccess: (page) => {

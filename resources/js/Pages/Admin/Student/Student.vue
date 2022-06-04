@@ -2,11 +2,10 @@
     <AdminLayout title="Ruang Kelas">
         <div class="flex flex-wrap">
             <div class="w-full mb-12 px-4">
-                <TeacherTable
+                <StudentTable
                     :schools="schools"
-                    :classroomsBySchool="classroomsBySchool"
                     :users="users"
-                    :studiesBySchool="studiesBySchool"
+                    :classroomsBySchool="classroomsBySchool"
                 />
             </div>
         </div>
@@ -14,13 +13,13 @@
 </template>
 <script>
 import AdminLayout from "@/Layouts/Admin.vue";
-import TeacherTable from "./Component/TeacherTable.vue";
+import StudentTable from "./Component/StudentTable.vue";
 
 export default {
-    props: ["schools", "classroomsBySchool", "users", "studiesBySchool"],
+    props: ["schools", "classroomsBySchool", "users"],
     components: {
         AdminLayout,
-        TeacherTable,
+        StudentTable,
     },
 };
 </script>

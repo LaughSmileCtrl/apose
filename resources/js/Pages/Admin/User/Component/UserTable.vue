@@ -218,8 +218,6 @@
                                 </td>
                                 <td
                                     class="
-                                        flex flex-row
-                                        gap-2
                                         border-b border-gray-200
                                         bg-white
                                         px-5
@@ -228,21 +226,23 @@
                                         h-full
                                     "
                                 >
-                                    <!-- <button
-                                        @click="editUser(user)"
-                                        class="
-                                            text-blue-400
-                                            hover:text-blue-900
-                                        "
-                                    >
-                                        Edit
-                                    </button> -->
-                                    <button
-                                        @click="deleteUser(user)"
-                                        class="text-red-400 hover:t ext-red-900"
-                                    >
-                                        Hapus
-                                    </button>
+                                    <div class="flex flex-row gap-2">
+                                        <!-- <button
+                                            @click="editUser(user)"
+                                            class="
+                                                text-blue-400
+                                                hover:text-blue-900
+                                            "
+                                        >
+                                            Edit
+                                        </button> -->
+                                        <button
+                                            @click="deleteUser(user)"
+                                            class="text-red-400 hover:t ext-red-900"
+                                        >
+                                            Hapus
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -340,11 +340,7 @@ export default {
             },
         };
     },
-    props: [
-        "schools",
-        "users",
-        "roles",
-    ],
+    props: ["schools", "users", "roles"],
     components: {
         Pagination,
         CustomModal,
@@ -382,7 +378,7 @@ export default {
                 this.updateUser();
             }
         },
-        
+
         postUser() {
             var inputJson = {
                 user_name: this.user.name,

@@ -54,20 +54,17 @@
                 <i class="fas fa-bars"></i>
             </button>
             <!-- Brand -->
-            <div
-                class="
-                    md:block
-                    text-center
-                    md:pb-2
-                    text-gray-600
-                    mr-0
-                    text-sm
-                    uppercase
-                    font-bold
-                    p-4
-                "
-            >
-                <h2>Aplikasi Pangajharan Online Sumenep</h2>
+            <div class="flex flex-col gap-2 p-1 md:pb-2 mr-0">
+                <ApplicationLogo />
+                <h2
+                    class="
+                        text-center text-gray-600 text-xs
+                        uppercase
+                        font-bold
+                    "
+                >
+                    Aplikasi Pangajharan Online Sumenep
+                </h2>
             </div>
             <!-- User -->
             <ul class="md:hidden items-center flex flex-wrap list-none">
@@ -131,7 +128,7 @@
                                 "
                                 to="/"
                             >
-                                Vue Notus
+                                APOSE
                             </div>
                         </div>
                         <div class="w-6/12 flex justify-end">
@@ -269,13 +266,32 @@
                         >
                             <i
                                 class="
-                                    fas fa-chalkboard-teacher
+                                    fas
+                                    fa-chalkboard-teacher
                                     mr-2
                                     text-sm text-center
                                     w-6
                                 "
                             ></i>
                             Guru
+                        </Link>
+                    </li>
+                    <li class="items-center">
+                        <Link
+                            :href="route('students.index')"
+                            class="text-xs uppercase py-3 font-bold block"
+                            :class="navClass(route().current('students.index'))"
+                        >
+                            <i
+                                class="
+                                    fas
+                                    fa-user-graduate
+                                    mr-2
+                                    text-sm text-center
+                                    w-6
+                                "
+                            ></i>
+                            Siswa
                         </Link>
                     </li>
                 </ul>
@@ -289,6 +305,7 @@
 import NotificationDropdown from "@/Components/Dropdowns/NotificationDropdown.vue";
 import UserDropdown from "@/Components/Dropdowns/UserDropdown.vue";
 import { Head, Link } from "@inertiajs/inertia-vue3";
+import ApplicationLogo from "../ApplicationLogo.vue";
 
 export default {
     data() {
@@ -310,6 +327,7 @@ export default {
         NotificationDropdown,
         UserDropdown,
         Link,
+        ApplicationLogo,
     },
 };
 </script>

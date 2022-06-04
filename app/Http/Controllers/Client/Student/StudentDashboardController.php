@@ -14,7 +14,12 @@ class StudentDashboardController extends Controller
     {
         $user = Auth::user();
         $classroom = $user->classroom()
-            ->select('id', 'name', 'school_id')->first();
+            ->select('classrooms.id', 'name', 'school_id')->first();
+
+        if ($classroom == null) {
+            return redirect()->route('error-page', 
+                'Mohon hubungi admin untuk menetapkan kelas anda');
+        }
 
         $school = $classroom->school()->first();
         $studies = $classroom->studies()

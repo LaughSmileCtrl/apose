@@ -25,7 +25,7 @@
                 <br />
                 <br />
 
-                <p class="text-2xl mb-8 bold" v-html="message" />
+                <p class="text-2xl mb-8 bold capitalize" v-html="message" />
                 <button @click="logout" class="btn btn-secondary">Keluar</button>
             </div>
             <div class="max-w-lg">

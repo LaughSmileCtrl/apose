@@ -11,8 +11,8 @@
                 "
             >
                 <div
-                    v-for="classroom in classrooms"
-                    :key="classroom"
+                    v-for="study in studies"
+                    :key="study"
                     class="flex flex-col w-full"
                 >
                     <div
@@ -33,19 +33,19 @@
                         <div class="flex flex-col gap-1 md:gap-2 md:mb-3">
                             <h2
                                 class="text-lg uppercase"
-                                v-html="classroom.class"
+                                v-html="study.classroom.name"
                             />
                             <h2
                                 class="text-md capitalize"
-                                v-html="classroom.study"
+                                v-html="study.name"
                             />
                         </div>
                         <div class="w-fit shrink-0">
                             <Link
                                 :href="
                                     route('teacher.classroom.show', [
-                                        classroom.class_id,
-                                        classroom.study_id,
+                                        study.classroom.id,
+                                        study.id,
                                     ])
                                 "
                                 class="btn btn-primary"
@@ -73,6 +73,6 @@ export default {
         Head,
         AuthenticatedLayout,
     },
-    props: ["classrooms"],
+    props: ["studies"],
 };
 </script>

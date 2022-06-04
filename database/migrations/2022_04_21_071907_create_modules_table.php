@@ -15,10 +15,14 @@ return new class extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('study_id')->constrained();
+            $table->foreignId('study_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');;
             $table->string('name');
             $table->string('file_path');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

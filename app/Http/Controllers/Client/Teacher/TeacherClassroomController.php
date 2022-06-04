@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client\Teacher;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classroom;
+use App\Models\Study;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -15,25 +16,15 @@ class TeacherClassroomController extends Controller
 
     public function index(Request $request)
     {
-        $classroomsCollect = Classroom::select('id', 'name')
-            ->whereHas('students', function($q, ) {
-                return $q->where('id', Auth::id());
+        $studies = Study::select('id', 'name', 'classroom_id')
+            ->whereHas('teacher', function($q, ) {
+                return $q->where('user_id', Auth::id());
             })
+            ->with('classroom:name,id')
             ->get();
 
-        foreach ($classroomsCollect as $classroom) {
-            foreach ($classroom->studies as $study) {
-                $classrooms[] = [
-                    'class_id' => $classroom->id,
-                    'class' => $classroom->name,
-                    'study_id' => $study->id,
-                    'study' => $study->name,
-                ];
-            }
-        }
-
         return Inertia::render('Teacher/ListClass', [
-            'classrooms' => $classrooms,
+            'studies' => $studies,
         ]);
     }
 

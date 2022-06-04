@@ -121,11 +121,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="school in schools.data" :key="school.id">
+                            <!-- @click="$inertia.get(route('classrooms.index', {_query: {school_id: school.id}}))" -->
+                            <tr
+                                v-for="school in schools.data"
+                                :key="school.id"
+                                :class="[
+                                    school.deleted_at == null
+                                        ? 'bg-white hover:bg-blue-100'
+                                        : 'bg-red-50 hover:bg-blue-100 text-red-400',
+                                ]"
+                            >
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-5
                                         text-sm
@@ -135,7 +143,6 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-5
                                         text-sm
@@ -146,7 +153,6 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-5
                                         text-sm
@@ -167,30 +173,44 @@
                                 />
                                 <td
                                     class="
-                                        flex flex-row
-                                        gap-2
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-5
                                         text-sm
                                     "
                                 >
-                                    <button
-                                        @click="editSchool(school)"
-                                        class="
-                                            text-blue-400
-                                            hover:text-blue-900
-                                        "
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        @click="deleteSchool(school)"
-                                        class="text-red-400 hover:text-red-900"
-                                    >
-                                        Hapus
-                                    </button>
+                                    <div class="flex flex-row gap-2">
+                                        <button
+                                            v-if="school.deleted_at"
+                                            @click="restoreSchool(school)"
+                                            class="
+                                                text-yellow-500
+                                                hover:text-yellow-900
+                                            "
+                                        >
+                                            Restore
+                                        </button>
+                                        <button
+                                            v-if="! school.deleted_at"
+                                            @click="editSchool(school)"
+                                            class="
+                                                text-blue-400
+                                                hover:text-blue-900
+                                            "
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            v-if="!school.deleted_at"
+                                            @click="deleteSchool(school)"
+                                            class="
+                                                text-red-400
+                                                hover:text-red-900
+                                            "
+                                        >
+                                            Hapus
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -338,6 +358,47 @@ export default {
                         },
                     }
                 );
+            });
+        },
+        restoreSchool(school) {
+            this.$swal({
+                title: "Anda yakin?",
+                text: `Anda akan mengembalikan ${school.name}?`,
+                icon: "warning",
+                showCloseButton: true,
+                showCancelButton: true,
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$inertia.put(route('schools.restore', school.id),
+                        {onSuccess: (page) => {
+                            this.$swal(
+                                "Berhasil merestore",
+                                page.props.flash.message,
+
+                                "success"
+                            );
+                        },
+                        onError: (message) => {
+                            var errorsMessage = [];
+                            for (var key in this.$attrs["errors"]) {
+                                errorsMessage.push(
+                                    `<li class="capitalize">
+                                        ${this.$attrs["errors"][key]}
+                                    </li>`
+                                );
+                            }
+
+                            this.$swal(
+                                "Gagal merestore data",
+                                `<ul class="text-red-500 ">
+                                    ${errorsMessage}
+                                </ul>`,
+                                "error"
+                            );
+                        },
+                    });
+                }
             });
         },
         deleteSchool(school) {

@@ -16,12 +16,20 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('creator_id');
-            $table->foreign('creator_id')->references('id')->on('users');
-            $table->foreignId('study_id')->constrained();
+            $table->foreign('creator_id')   
+                ->references('id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('study_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');;
             $table->string('name');
             $table->text('description')->nullable();
             $table->dateTime('deadline');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

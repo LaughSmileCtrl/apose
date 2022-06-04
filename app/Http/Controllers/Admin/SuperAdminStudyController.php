@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class SuperAdminStudyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $schools = School::select('id', 'name')->get();
 
@@ -24,7 +24,14 @@ class SuperAdminStudyController extends Controller
             })
             ->all();
         
-        $studies = Study::with('classroom.school')
+        $studies = Study::withTrashed()
+            ->has('classroom')
+            ->with('classroom.school')
+            ->when($request->search, function($query, $search) {
+                return $query->where('name', 'LIKE', '%'.$search.'%')
+                    ->orWhere('classroom_id', 'LIKE', '%'.$search.'%')
+                    ->orWhere('id', $search);
+            })
             ->paginate(50);
 
         return Inertia::render('Admin/Study/Study', [
@@ -64,6 +71,19 @@ class SuperAdminStudyController extends Controller
 
         return back()->with([
             'message' => $study->name.' berhasil dihapus'
+        ]);
+    }
+
+    public function restore($id)
+    {
+        Study::withTrashed()
+            ->where('id', $id)
+            ->restore();
+
+        $study = Study::find($id);
+
+        return back()->with([
+            'message' => $study->name.' berhasil direstore',
         ]);
     }
 }

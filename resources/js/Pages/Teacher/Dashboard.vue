@@ -190,8 +190,10 @@
                                     justify-around
                                     h-24
                                     w-36
-                                    border border-gray-100
-                                    shadow-md shadow-blue-200
+                                    border border-blue-50
+                                    shadow-md hover:shadow-lg
+                                    shadow-blue-200 hover:shadow-blue-200
+                                    text-gray-800
                                     rounded-md
                                     px-1
                                 "
@@ -211,6 +213,7 @@
                             </Link>
 
                             <Link
+                                v-if="studies.length != 7"
                                 class="flex flex-col gap-1 items-center"
                                 :href="route('teacher.classroom.index')"
                             >

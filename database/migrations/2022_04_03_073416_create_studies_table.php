@@ -15,10 +15,14 @@ return new class extends Migration
     {
         Schema::create('studies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('classroom_id')->constrained();
+            $table->foreignId('classroom_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');;
             $table->string('name');
             $table->string('icon_path');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

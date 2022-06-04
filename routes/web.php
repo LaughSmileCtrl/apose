@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\SuperAdminClassroomController;
 use App\Http\Controllers\Admin\SuperAdminDashboardController;
 use App\Http\Controllers\Admin\SuperAdminSchoolController;
+use App\Http\Controllers\Admin\SuperAdminStudentController;
 use App\Http\Controllers\Admin\SuperAdminStudyController;
 use App\Http\Controllers\Admin\SuperAdminTeacherController;
 use App\Http\Controllers\Admin\SuperAdminUserController;
@@ -112,10 +113,20 @@ Route::get('/admin/dashboard', [SuperAdminDashboardController::class, 'index'])
     ->name('admin.dashboard');
 
 Route::resource('schools', SuperAdminSchoolController::class);
+Route::put('/schools/{id}/restore', [SuperAdminSchoolController::class, 'restore'])
+    ->name('schools.restore');
+
 Route::resource('classrooms', SuperAdminClassroomController::class);
+Route::put('/classrooms/{id}/restore', [SuperAdminClassroomController::class, 'restore'])
+    ->name('classrooms.restore');
+
 Route::resource('studies', SuperAdminStudyController::class);
+Route::put('/studies/{id}/restore', [SuperAdminStudyController::class, 'restore'])
+    ->name('studies.restore');
+
 Route::resource('users', SuperAdminUserController::class);
 Route::resource('teachers', SuperAdminTeacherController::class);
+Route::resource('students', SuperAdminStudentController::class);
 
 Route::get('/error/{message}', [ErrorController::class, 'index'])->name('error-page');
 

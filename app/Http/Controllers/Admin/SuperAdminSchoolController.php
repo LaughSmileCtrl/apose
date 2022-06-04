@@ -11,7 +11,7 @@ class SuperAdminSchoolController extends Controller
 {
     public function index(Request $request)
     {
-        $schools = School::select('id', 'name', 'created_at')
+        $schools = School::withTrashed()
             ->when($request->search, function($query, $search) {
                 return $query->where('name', 'LIKE', '%'.$search.'%')
                     ->orWhere('id', $search);
@@ -51,6 +51,19 @@ class SuperAdminSchoolController extends Controller
         
         return back()->with([
             'message' => $school->name.' berhasil dihapus',
+        ]);
+    }
+
+    public function restore($id)
+    {
+        School::withTrashed()
+            ->where('id', $id)
+            ->restore();
+
+        $school = School::find($id);
+
+        return back()->with([
+            'message' => $school->name.' berhasil direstore',
         ]);
     }
 }

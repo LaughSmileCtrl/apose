@@ -64,7 +64,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -79,7 +78,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -94,7 +92,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -109,7 +106,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -124,7 +120,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -139,13 +134,16 @@
                             <tr
                                 v-for="classroom in classrooms.data"
                                 :key="classroom.id"
+                                :class="[
+                                    classroom.deleted_at == null
+                                        ? 'bg-white hover:bg-blue-100'
+                                        : 'bg-red-50 hover:bg-blue-100 text-red-400',
+                                ]"
                             >
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                     "
                                     v-html="classroom.id"
@@ -153,9 +151,7 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                         capitalize
                                     "
@@ -164,9 +160,7 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                         capitalize
                                     "
@@ -175,9 +169,7 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                     "
                                     v-html="
@@ -196,30 +188,39 @@
                                 />
                                 <td
                                     class="
-                                        flex flex-row
-                                        gap-2
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                     "
                                 >
-                                    <!-- <button
-                                        @click="editClassroom(classroom)"
-                                        class="
-                                            text-blue-400
-                                            hover:text-blue-900
-                                        "
-                                    >
-                                        Edit
-                                    </button> -->
-                                    <button
-                                        @click="deleteClassroom(classroom)"
-                                        class="text-red-400 hover:t ext-red-900"
-                                    >
-                                        Hapus
-                                    </button>
+                                    <div class="flex flex-row gap-2">
+                                         <button
+                                            v-if="classroom.deleted_at"
+                                            @click="restoreClassroom(classroom)"
+                                            class="
+                                                text-yellow-500
+                                                hover:text-yellow-900
+                                            "
+                                        >
+                                            Restore
+                                        </button>
+                                        <!-- <button
+                                            @click="editClassroom(classroom)"
+                                            class="
+                                                text-blue-400
+                                                hover:text-blue-900
+                                            "
+                                        >
+                                            Edit
+                                        </button> -->
+                                        <button
+                                            v-if="! classroom.deleted_at"
+                                            @click="deleteClassroom(classroom)"
+                                            class="text-red-400 hover:t ext-red-900"
+                                        >
+                                            Hapus
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -432,6 +433,47 @@ export default {
                             },
                         }
                     );
+                }
+            });
+        },
+        restoreClassroom(classroom) {
+            this.$swal({
+                title: "Anda yakin?",
+                text: `Anda akan mengembalikan ${classroom.name}?`,
+                icon: "warning",
+                showCloseButton: true,
+                showCancelButton: true,
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$inertia.put(route('classrooms.restore', classroom.id),
+                        {onSuccess: (page) => {
+                            this.$swal(
+                                "Berhasil merestore",
+                                page.props.flash.message,
+
+                                "success"
+                            );
+                        },
+                        onError: (message) => {
+                            var errorsMessage = [];
+                            for (var key in this.$attrs["errors"]) {
+                                errorsMessage.push(
+                                    `<li class="capitalize">
+                                        ${this.$attrs["errors"][key]}
+                                    </li>`
+                                );
+                            }
+
+                            this.$swal(
+                                "Gagal merestore data",
+                                `<ul class="text-red-500 ">
+                                    ${errorsMessage}
+                                </ul>`,
+                                "error"
+                            );
+                        },
+                    });
                 }
             });
         },

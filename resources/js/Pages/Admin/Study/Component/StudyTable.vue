@@ -64,7 +64,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -79,7 +78,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -94,7 +92,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -109,7 +106,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -124,7 +120,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -139,7 +134,6 @@
                                     scope="col"
                                     class="
                                         border-b border-gray-200
-                                        bg-white
                                         px-5
                                         py-3
                                         text-left text-sm
@@ -151,13 +145,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="study in studies.data" :key="study.id">
+                            <tr
+                                v-for="study in studies.data"
+                                :key="study.id"
+                                :class="[
+                                    study.deleted_at == null
+                                        ? 'bg-white hover:bg-blue-100'
+                                        : 'bg-red-50 hover:bg-blue-100 text-red-400',
+                                ]"
+                            >
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                     "
                                     v-html="study.id"
@@ -165,9 +165,7 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                         capitalize
                                     "
@@ -176,9 +174,7 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                         capitalize
                                     "
@@ -187,9 +183,7 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                         capitalize
                                     "
@@ -198,9 +192,7 @@
                                 <td
                                     class="
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                     "
                                     v-html="
@@ -219,30 +211,44 @@
                                 />
                                 <td
                                     class="
-                                        flex flex-row
-                                        gap-2
                                         border-b border-gray-200
-                                        bg-white
-                                        px-5
-                                        py-5
+                                        p-5
                                         text-sm
                                     "
                                 >
-                                    <button
-                                        @click="editStudy(study)"
-                                        class="
-                                            text-blue-400
-                                            hover:text-blue-900
-                                        "
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        @click="deleteStudy(study)"
-                                        class="text-red-400 hover:t ext-red-900"
-                                    >
-                                        Hapus
-                                    </button>
+                                    <div class="flex flex-row gap-2">
+                                        <button
+                                            v-if="study.deleted_at"
+                                            @click="restoreStudy(study)"
+                                            class="
+                                                text-yellow-500
+                                                hover:text-yellow-900
+                                            "
+                                        >
+                                            Restore
+                                        </button>
+                                        <button
+                                            v-if="! study.deleted_at"
+                                            @click="editStudy(study)"
+                                            class="
+                                                text-blue-400
+                                                hover:text-blue-900
+                                            "
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            v-if="! study.deleted_at"
+                                            @click="deleteStudy(study)"
+                                            class="
+                                                text-red-400
+                                                hover:t
+                                                ext-red-900
+                                            "
+                                        >
+                                            Hapus
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -252,7 +258,11 @@
             </div>
         </div>
     </div>
-    <CustomModal :show="modalStatus" @close="closeModal" @confirmed="confirmedModal">
+    <CustomModal
+        :show="modalStatus"
+        @close="closeModal"
+        @confirmed="confirmedModal"
+    >
         <div
             class="
                 grid grid-cols-3
@@ -344,7 +354,7 @@ export default {
         },
         closeModal() {
             this.modalStatus = false;
-            this.selectedStudy= null;
+            this.selectedStudy = null;
             this.schoolSelectedId = null;
             this.classroomSelectedId = null;
             this.studyName = null;
@@ -373,7 +383,7 @@ export default {
                     this.schoolSelectedId = null;
                     this.classroomSelectedId = null;
                     this.studyName = null;
-                    
+
                     this.closeModal();
                 },
                 onError: (message) => {
@@ -398,9 +408,9 @@ export default {
         },
         editStudy(study) {
             this.selectedStudy = study;
-            this.schoolSelectedId = study.classroom.school_id
-            this.classroomSelectedId = study.classroom.id
-            this.studyName = study.name
+            this.schoolSelectedId = study.classroom.school_id;
+            this.classroomSelectedId = study.classroom.id;
+            this.studyName = study.name;
             this.showModal();
         },
         updateStudy() {
@@ -409,40 +419,44 @@ export default {
                 study_name: this.studyName,
             };
 
-            this.$inertia.put(route("studies.update", this.selectedStudy.id), inputJson, {
-                onSuccess: (page) => {
-                    this.$swal(
-                        "Berhasil Menyimpan",
-                        page.props.flash.message,
-                        "success"
-                    );
+            this.$inertia.put(
+                route("studies.update", this.selectedStudy.id),
+                inputJson,
+                {
+                    onSuccess: (page) => {
+                        this.$swal(
+                            "Berhasil Menyimpan",
+                            page.props.flash.message,
+                            "success"
+                        );
 
-                    this.schoolSelectedId = null;
-                    this.classroomSelectedId = null;
-                    this.studyName = null;
-                    this.selectedStudy = null;
+                        this.schoolSelectedId = null;
+                        this.classroomSelectedId = null;
+                        this.studyName = null;
+                        this.selectedStudy = null;
 
-                    this.closeModal();
-                },
-                onError: (message) => {
-                    var errorsMessage = [];
-                    for (var key in this.$attrs["errors"]) {
-                        errorsMessage.push(
-                            `<li class="capitalize">
+                        this.closeModal();
+                    },
+                    onError: (message) => {
+                        var errorsMessage = [];
+                        for (var key in this.$attrs["errors"]) {
+                            errorsMessage.push(
+                                `<li class="capitalize">
                                         ${this.$attrs["errors"][key]}
                                     </li>`
-                        );
-                    }
+                            );
+                        }
 
-                    this.$swal(
-                        "Gagal menambah data",
-                        `<ul class="text-red-500 ">
+                        this.$swal(
+                            "Gagal menambah data",
+                            `<ul class="text-red-500 ">
                                     ${errorsMessage}
                                 </ul>`,
-                        "error"
-                    );
-                },
-            });
+                            "error"
+                        );
+                    },
+                }
+            );
         },
         deleteStudy(study) {
             this.$swal({
@@ -474,6 +488,47 @@ export default {
 
                             this.$swal(
                                 "Gagal menambah data",
+                                `<ul class="text-red-500 ">
+                                    ${errorsMessage}
+                                </ul>`,
+                                "error"
+                            );
+                        },
+                    });
+                }
+            });
+        },
+        restoreStudy(study) {
+            this.$swal({
+                title: "Anda yakin?",
+                text: `Anda akan mengembalikan ${study.name}?`,
+                icon: "warning",
+                showCloseButton: true,
+                showCancelButton: true,
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$inertia.put(route('studies.restore', study.id),
+                        {onSuccess: (page) => {
+                            this.$swal(
+                                "Berhasil merestore",
+                                page.props.flash.message,
+
+                                "success"
+                            );
+                        },
+                        onError: (message) => {
+                            var errorsMessage = [];
+                            for (var key in this.$attrs["errors"]) {
+                                errorsMessage.push(
+                                    `<li class="capitalize">
+                                        ${this.$attrs["errors"][key]}
+                                    </li>`
+                                );
+                            }
+
+                            this.$swal(
+                                "Gagal merestore data",
                                 `<ul class="text-red-500 ">
                                     ${errorsMessage}
                                 </ul>`,

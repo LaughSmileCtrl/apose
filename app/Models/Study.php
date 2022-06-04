@@ -4,14 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 
 class Study extends Model
 {
-    use HasFactory;
+    use SoftDeletes, CascadeSoftDeletes, HasFactory;
 
     protected $fillable = [
         'name',
         'conversation_url',
+    ];
+
+    protected $cascadeDeletes = [
+        'modules',
+        'tasks',
     ];
 
     protected $attributes = [

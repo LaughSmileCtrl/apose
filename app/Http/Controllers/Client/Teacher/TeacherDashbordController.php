@@ -23,12 +23,10 @@ class TeacherDashbordController extends Controller
 
         if ($studies->count() <= 0) {
             return redirect()->route('error-page', 
-                'Mohon Hubungi Admin Untuk Mengisi Kelas');
+                'Mohon hubungi admin untuk menetapkan pelajaran anda');
         };
 
-        $school = $teacher->teachs()->first()
-            ->classroom
-            ->school;
+        $school = School::find($teacher->school_id);
 
         return Inertia::render('Teacher/Dashboard', [
             'school' => $school->name,
