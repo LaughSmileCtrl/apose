@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout title="Ruang Kelas">
+    <AdminLayout title="Guru">
         <div class="flex flex-wrap">
             <div class="w-full mb-12 px-4">
                 <TeacherTable

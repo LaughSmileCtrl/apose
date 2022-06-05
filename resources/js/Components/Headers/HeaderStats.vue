@@ -1,34 +1,55 @@
 <template>
     <!-- Header -->
-    <div class=" bg-blue-500 md:pt-12 pb-32 pt-12 z-40">
+    <div class="bg-blue-500 md:pt-12 pb-32 pt-12 z-40">
         <div class="px-4 md:px-10 w-full">
             <!-- Card stats -->
-            <div class="flex flex-wrap justify-around">
-                <div class="w-full sm:w-1/2 lg:w-3/12 px-4">
+            <div class="flex flex-wrap justify-around gap-y-5">
+                <div
+                    v-if="$page.props.auth.user.roles[0].name == 'super-admin'"
+                    class="w-full sm:w-1/2 lg:w-4/12 px-4"
+                >
                     <card-stats
-                        statSubtitle="SCHOOL"
+                        statSubtitle="Sekolah"
                         :statTitle="schoolCount"
                         statDescripiron="Since last month"
                         statIconName="fas fa-school"
                         statIconColor="bg-red-500"
                     />
                 </div>
-                <div class="w-full sm:w-1/2 lg:w-3/12 px-4">
+                <div class="w-full sm:w-1/2 lg:w-4/12 px-4">
                     <card-stats
-                        statSubtitle="CLASSROOM"
+                        statSubtitle="RuangKelas"
                         :statTitle="classroomCount"
                         statDescripiron="Since last week"
                         statIconName="fas fa-chalkboard"
                         statIconColor="bg-orange-500"
                     />
                 </div>
-                <div class="w-full sm:w-1/2 lg:w-3/12 px-4">
+                <div class="w-full sm:w-1/2 lg:w-4/12 px-4">
                     <card-stats
-                        statSubtitle="USER"
+                        statSubtitle="Pengguna"
                         :statTitle="userCount"
                         statDescripiron="Since yesterday"
                         statIconName="fas fa-user-alt"
                         statIconColor="bg-pink-500"
+                    />
+                </div>
+                <div class="w-full sm:w-1/2 lg:w-4/12 px-4">
+                    <card-stats
+                        statSubtitle="Guru"
+                        :statTitle="teacherCount"
+                        statDescripiron="Since yesterday"
+                        statIconName="fas fa-user-alt"
+                        statIconColor="bg-green-500"
+                    />
+                </div>
+                <div class="w-full sm:w-1/2 lg:w-4/12 px-4">
+                    <card-stats
+                        statSubtitle="Siswa"
+                        :statTitle="studentCount"
+                        statDescripiron="Since yesterday"
+                        statIconName="fas fa-user-alt"
+                        statIconColor="bg-violet-500"
                     />
                 </div>
             </div>
@@ -47,6 +68,8 @@ export default {
         "schoolCount",
         "classroomCount",
         "userCount",
-    ]
+        "teacherCount",
+        "studentCount",
+    ],
 };
 </script>

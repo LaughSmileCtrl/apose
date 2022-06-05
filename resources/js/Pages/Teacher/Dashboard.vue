@@ -5,7 +5,7 @@
             <div class="w-[300px] h-auto bg-white rounded-3xl hidden lg:block">
                 <SideNav
                     :class="sideNavClass + ' rounded-3xl'"
-                    @close="toggleSideNav"
+                    
                 />
             </div>
             <div class="w-full h-auto bg-white rounded-3xl">
@@ -61,7 +61,7 @@
                             </div>
                             <div class="flex flex-col ml-3">
                                 <h2
-                                    class="text-md font-semibold"
+                                    class="text-md font-semibold capitalize"
                                     v-html="$page.props.auth.user.name"
                                 />
                                 <h3 class="text-xs" v-html="school" />

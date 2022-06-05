@@ -14,6 +14,7 @@ class Study extends Model
     protected $fillable = [
         'name',
         'conversation_url',
+        'icon_path',
     ];
 
     protected $cascadeDeletes = [

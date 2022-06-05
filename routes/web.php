@@ -1,13 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\SuperAdminClassroomController;
-use App\Http\Controllers\Admin\SuperAdminDashboardController;
-use App\Http\Controllers\Admin\SuperAdminSchoolController;
-use App\Http\Controllers\Admin\SuperAdminStudentController;
-use App\Http\Controllers\Admin\SuperAdminStudyController;
-use App\Http\Controllers\Admin\SuperAdminTeacherController;
-use App\Http\Controllers\Admin\SuperAdminUserController;
+use App\Http\Controllers\Admin\AdminClassroomController;
+use App\Http\Controllers\Admin\AdminSchoolController;
+use App\Http\Controllers\Admin\AdminStudentController;
+use App\Http\Controllers\Admin\AdminStudyController;
+use App\Http\Controllers\Admin\AdminTeacherController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Client\Student\StudentDashboardController;
 use App\Http\Controllers\Client\Student\StudentModuleController;
 use App\Http\Controllers\Client\Student\StudentStudyController;
@@ -18,6 +17,7 @@ use App\Http\Controllers\Client\Teacher\TeacherConversationController;
 use App\Http\Controllers\Client\Teacher\TeacherModuleController;
 use App\Http\Controllers\Client\Teacher\TeacherTaskController;
 use App\Http\Controllers\ErrorController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -35,6 +35,17 @@ use Inertia\Inertia;
 Route::get('/', function () {
     // return Inertia::render('Welcome');
 });
+
+Route::get('/dashboard', function() {
+    if (Auth::user()->hasRole('student')) {
+        return redirect()->route('student.dashboard');
+    } else if (Auth::user()->hasRole('teacher')) {
+        return redirect()->route('teacher.dashboard');
+    } else if (Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('admin')) {
+        return redirect()->route('admin.dashboard');
+    } 
+    abort(403);
+})->middleware(['auth']);
 
 Route::name('teacher.')
     ->prefix('/teacher')
@@ -73,7 +84,7 @@ Route::name('teacher.')
         Route::delete('/study/{studyId}/task/{taskId}', [TeacherTaskController::class, 'destroy'])
             ->name('task.destroy');
 
-        Route::get('/task/{taskId}/student/{studentId}', [StudentTaskController::class, 'show'])
+        Route::get('/task/{taskId}/student/{studentId}', [TeacherTaskController::class, 'showStudentTask'])
             ->name('task.student');
 
         Route::post('/study/{studyId}/conversation', [TeacherConversationController::class, 'store'])
@@ -95,8 +106,11 @@ Route::name('student.')
         Route::get('/study/{studyId}', [StudentStudyController::class, 'show'])
             ->name('study.show');
 
-        Route::get('/study/{studyId}/task', [StudentTaskController::class, 'index'])
+        Route::get('/task', [StudentTaskController::class, 'index'])
             ->name('task.index');
+
+        Route::get('/study/{studyId}/task', [StudentTaskController::class, 'show'])
+            ->name('task.show');
 
         Route::post('/study/{studyId}/task/{taskId}', [StudentTaskController::class, 'store'])
             ->name('task.store');
@@ -109,24 +123,31 @@ Route::name('student.')
     });
 
 
-Route::get('/admin/dashboard', [SuperAdminDashboardController::class, 'index'])
-    ->name('admin.dashboard');
-
-Route::resource('schools', SuperAdminSchoolController::class);
-Route::put('/schools/{id}/restore', [SuperAdminSchoolController::class, 'restore'])
-    ->name('schools.restore');
-
-Route::resource('classrooms', SuperAdminClassroomController::class);
-Route::put('/classrooms/{id}/restore', [SuperAdminClassroomController::class, 'restore'])
-    ->name('classrooms.restore');
-
-Route::resource('studies', SuperAdminStudyController::class);
-Route::put('/studies/{id}/restore', [SuperAdminStudyController::class, 'restore'])
-    ->name('studies.restore');
-
-Route::resource('users', SuperAdminUserController::class);
-Route::resource('teachers', SuperAdminTeacherController::class);
-Route::resource('students', SuperAdminStudentController::class);
+Route::prefix('/admin')
+    ->middleware(['auth', 'verified', 'role:super-admin|admin'])
+    ->group(function() {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])
+            ->name('admin.dashboard');
+        
+        Route::resource('schools', AdminSchoolController::class)
+            ->middleware('role:super-admin');
+        
+        Route::put('/schools/{id}/restore', [AdminSchoolController::class, 'restore'])
+            ->name('schools.restore')
+            ->middleware('role:super-admin');
+        
+        Route::resource('classrooms', AdminClassroomController::class);
+        Route::put('/classrooms/{id}/restore', [AdminClassroomController::class, 'restore'])
+            ->name('classrooms.restore');
+        
+        Route::resource('studies', AdminStudyController::class);
+        Route::put('/studies/{id}/restore', [AdminStudyController::class, 'restore'])
+            ->name('studies.restore');
+        
+        Route::resource('users', AdminUserController::class);
+        Route::resource('teachers', AdminTeacherController::class);
+        Route::resource('students', AdminStudentController::class);
+    });
 
 Route::get('/error/{message}', [ErrorController::class, 'index'])->name('error-page');
 

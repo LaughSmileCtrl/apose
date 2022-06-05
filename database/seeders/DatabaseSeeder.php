@@ -8,6 +8,7 @@ use App\Models\Study;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,10 +29,17 @@ class DatabaseSeeder extends Seeder
         
         User::factory(2)->create();
 
+        $superAdmin = User::create([
+            'name' => 'firman',
+            'email' => 'firman@coba.com',
+            'password' =>Hash::make('password'),
+        ]);
+
         $users = User::all();
 
         $users[0]->assignRole('teacher');
         $users[1]->assignRole('student');
+        $superAdmin->assignRole('super-admin');
         
         $users[0]->teachs()->saveMany(Study::where('id', '<', '4')->get());
         ClassroomStudent::create([

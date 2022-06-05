@@ -41,7 +41,7 @@
                                     focus:ring-2
                                     focus:ring-blue-600
                                 "
-                                placeholder="Cari"
+                                placeholder="Cari Nama"
                             />
                         </div>
                     </form>
@@ -73,6 +73,20 @@
                                     "
                                 >
                                     ID
+                                </th>
+                                <th
+                                    scope="col"
+                                    class="
+                                        border-b border-gray-200
+                                        px-5
+                                        py-3
+                                        text-left text-sm
+                                        font-normal
+                                        uppercase
+                                        text-gray-800
+                                    "
+                                >
+                                    Ikon
                                 </th>
                                 <th
                                     scope="col"
@@ -155,13 +169,14 @@
                                 ]"
                             >
                                 <td
-                                    class="
-                                        border-b border-gray-200
-                                        p-5
-                                        text-sm
-                                    "
+                                    class="border-b border-gray-200 p-5 text-sm"
                                     v-html="study.id"
                                 />
+                                <td
+                                    class="border-b border-gray-200 p-5 text-sm"
+                                >
+                                    <img :src="study.icon_path" class="w-10" alt="icon-study" >
+                                </td>
                                 <td
                                     class="
                                         border-b border-gray-200
@@ -190,11 +205,7 @@
                                     v-html="study.name"
                                 />
                                 <td
-                                    class="
-                                        border-b border-gray-200
-                                        p-5
-                                        text-sm
-                                    "
+                                    class="border-b border-gray-200 p-5 text-sm"
                                     v-html="
                                         new Date(
                                             study.created_at
@@ -210,11 +221,7 @@
                                     "
                                 />
                                 <td
-                                    class="
-                                        border-b border-gray-200
-                                        p-5
-                                        text-sm
-                                    "
+                                    class="border-b border-gray-200 p-5 text-sm"
                                 >
                                     <div class="flex flex-row gap-2">
                                         <button
@@ -228,7 +235,7 @@
                                             Restore
                                         </button>
                                         <button
-                                            v-if="! study.deleted_at"
+                                            v-if="!study.deleted_at"
                                             @click="editStudy(study)"
                                             class="
                                                 text-blue-400
@@ -238,7 +245,7 @@
                                             Edit
                                         </button>
                                         <button
-                                            v-if="! study.deleted_at"
+                                            v-if="!study.deleted_at"
                                             @click="deleteStudy(study)"
                                             class="
                                                 text-red-400
@@ -274,8 +281,8 @@
         >
             <label>Sekolah</label>
             <select
-                v-model="schoolSelectedId"
-                :disabled="selectedStudy != null"
+                v-model="selectedStudy.school_id"
+                :disabled="selectedStudy.id != null"
                 class="col-span-2 rounded-xl px-2 my-1 w-full"
             >
                 <option
@@ -287,12 +294,12 @@
             </select>
             <label>Kelas</label>
             <select
-                v-model="classroomSelectedId"
-                :disabled="selectedStudy != null"
+                v-model="selectedStudy.classroom_id"
+                :disabled="selectedStudy.id != null"
                 class="col-span-2 rounded-xl px-2 my-1 w-full"
             >
                 <option
-                    v-for="classroom in classrooms[schoolSelectedId]"
+                    v-for="classroom in classrooms[selectedStudy.school_id]"
                     :key="classroom"
                     :value="classroom.id"
                     v-html="classroom.name"
@@ -300,11 +307,13 @@
             </select>
             <label>Nama Pelajaran</label>
             <input
-                v-model="studyName"
+                v-model="selectedStudy.name"
                 type="text"
                 placeholder="Masukkan Nama Pelajaran"
                 class="col-span-2 rounded-xl px-2 my-1 w-full"
             />
+            <label>Ikon</label>
+            <input @change="addIcon($event)" type="file" accept="image/png, image/jpeg">
         </div>
     </CustomModal>
 </template>
@@ -318,10 +327,13 @@ export default {
         return {
             searchQuery: "",
             modalStatus: false,
-            schoolSelectedId: null,
-            classroomSelectedId: null,
-            studyName: null,
-            selectedStudy: null,
+            selectedStudy: {
+                id: null,
+                school_id: null,
+                classroom_id: null,
+                name: null,
+                icon: null,
+            },
         };
     },
     props: ["schools", "classrooms", "studies"],
@@ -354,22 +366,36 @@ export default {
         },
         closeModal() {
             this.modalStatus = false;
-            this.selectedStudy = null;
-            this.schoolSelectedId = null;
-            this.classroomSelectedId = null;
-            this.studyName = null;
+            this.selectedStudy = {
+                id: null,
+                school_id: null,
+                classroom_id: null,
+                name: null,
+                icon: null,
+            };
         },
         confirmedModal() {
-            if (this.selectedStudy === null) {
+            if (this.selectedStudy.id === null) {
                 this.postStudy();
             } else {
                 this.updateStudy();
             }
+
+            this.selectedStudy = {
+                id: null,
+                school_id: null,
+                classroom_id: null,
+                name: null,
+            };
+        },
+        addIcon(event) {
+            this.selectedStudy.icon = event.target.files[0];
         },
         postStudy() {
             var inputJson = {
-                classroom_id: this.classroomSelectedId,
-                study_name: this.studyName,
+                classroom_id: this.selectedStudy.classroom_id,
+                study_name: this.selectedStudy.name,
+                icon: this.selectedStudy.icon,
             };
 
             this.$inertia.post(route("studies.store"), inputJson, {
@@ -379,10 +405,6 @@ export default {
                         page.props.flash.message,
                         "success"
                     );
-
-                    this.schoolSelectedId = null;
-                    this.classroomSelectedId = null;
-                    this.studyName = null;
 
                     this.closeModal();
                 },
@@ -407,19 +429,25 @@ export default {
             });
         },
         editStudy(study) {
-            this.selectedStudy = study;
-            this.schoolSelectedId = study.classroom.school_id;
-            this.classroomSelectedId = study.classroom.id;
-            this.studyName = study.name;
+            this.selectedStudy = {
+                id: study.id,
+                school_id: study.classroom.school_id,
+                classroom_id: study.classroom_id,
+                name: study.name,
+                icon: null,
+            };
+
             this.showModal();
         },
         updateStudy() {
             var inputJson = {
-                classroom_id: this.classroomSelectedId,
-                study_name: this.studyName,
+                _method: 'put',
+                classroom_id: this.selectedStudy.classroom_id,
+                study_name: this.selectedStudy.name,
+                icon: this.selectedStudy.icon,
             };
 
-            this.$inertia.put(
+            this.$inertia.post(
                 route("studies.update", this.selectedStudy.id),
                 inputJson,
                 {
@@ -508,8 +536,8 @@ export default {
                 reverseButtons: true,
             }).then((result) => {
                 if (result.isConfirmed) {
-                    this.$inertia.put(route('studies.restore', study.id),
-                        {onSuccess: (page) => {
+                    this.$inertia.put(route("studies.restore", study.id), {
+                        onSuccess: (page) => {
                             this.$swal(
                                 "Berhasil merestore",
                                 page.props.flash.message,

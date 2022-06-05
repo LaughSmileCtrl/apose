@@ -21,6 +21,8 @@ return new class extends Migration
                 ->onDelete('cascade');;
             $table->string('name');
             $table->string('file_path');
+            $table->string('file_type')
+                ->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

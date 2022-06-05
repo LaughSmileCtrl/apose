@@ -23,11 +23,12 @@ class StudentDashboardController extends Controller
 
         $school = $classroom->school()->first();
         $studies = $classroom->studies()
-            ->select('id', 'name', 'icon_path')->get()
+            ->select('id', 'name', 'icon_path')
+            ->limit(7)->get()
             ->map(function($study, $key) {
                 $study->icon_path = Storage::url($study->icon_path);
                 return $study;
-            })->slice(0, 8);
+            });
 
         $tasks = $user->studentTasks()
             ->wherePivot('status', 0)

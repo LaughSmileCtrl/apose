@@ -41,7 +41,7 @@
                                     focus:ring-2
                                     focus:ring-blue-600
                                 "
-                                placeholder="Cari"
+                                placeholder="Cari Nama"
                             />
                         </div>
                     </form>
@@ -204,7 +204,8 @@
                                         >
                                             Restore
                                         </button>
-                                        <!-- <button
+                                        <button
+                                            v-if="! classroom.deleted_at"
                                             @click="editClassroom(classroom)"
                                             class="
                                                 text-blue-400
@@ -212,7 +213,7 @@
                                             "
                                         >
                                             Edit
-                                        </button> -->
+                                        </button>
                                         <button
                                             v-if="! classroom.deleted_at"
                                             @click="deleteClassroom(classroom)"
@@ -339,6 +340,8 @@ export default {
                 title: "Edit Kelas",
                 html: `
                 <div class="grid grid-cols-3 gap-y-6 gap-x-1 justify-items-start place-items-center px-3 ">
+                    <h2>Sekolah</h2>
+                    <h2 class="col-span-2 ">${classroom.school.name}</h2>
                     <label>Nama Kelas</label>
                     <input 
                         id="name" 
@@ -347,8 +350,7 @@ export default {
                         placeholder="Masukkan Nama Kelas" 
                         class="col-span-2 rounded-xl px-2 my-1 w-full"
                     >
-                </div>
-                `,
+                </div>`,
                 showCloseButton: true,
                 showCancelButton: true,
                 reverseButtons: true,

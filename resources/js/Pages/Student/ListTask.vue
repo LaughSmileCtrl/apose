@@ -3,9 +3,10 @@
         <div class="max-w-screen min-h-screen">
             <div class="container mx-auto">
                 <div class="m-4">
-                    <h2 class="text-xl font-bold capitalize">
-                        Tugas {{ study.name }}
+                    <h2 class="text-xl font-bold capitalize mb-5">
+                        Tugas {{ study_name }}
                     </h2>
+
                     <div class="mt-8">
                         <div
                             class="
@@ -18,7 +19,14 @@
                             <div
                                 v-for="task in tasks"
                                 :key="task.id"
-                                class="w-full rounded-2xl border p-6 shadow-xl"
+                                class="
+                                    w-full
+                                    rounded-2xl
+                                    border
+                                    p-6
+                                    shadow-md
+                                    hover:shadow-x hover:border-blue-300
+                                "
                             >
                                 <div class="h-16">
                                     <div
@@ -28,10 +36,25 @@
                                             items-center
                                         "
                                     >
-                                        <h2
-                                            class="text-lg font-bold capitalize"
-                                            v-html="task.name"
-                                        />
+                                        <div class="grid w-full">
+                                            <h2
+                                                v-if="
+                                                    route().current(
+                                                        'student.task.index'
+                                                    )
+                                                "
+                                                class="text-md capitalize"
+                                                v-html="task.study.name"
+                                            />
+                                            <h2
+                                                class="
+                                                    text-lg
+                                                    font-bold
+                                                    capitalize
+                                                "
+                                                v-html="task.name"
+                                            />
+                                        </div>
 
                                         <svg
                                             v-if="task.pivot.status == 1"
@@ -106,11 +129,11 @@ export default {
     components: {
         AuthenticatedLayout,
     },
-    props: ["tasks", "study"],
+    props: ["tasks", "study_name"],
     methods: {
-         showModal(task) {
+        showModal(task) {
             this.$swal({
-                title: this.study.name.toUpperCase(),
+                title: task.study.name.toUpperCase(),
                 html: `
                 <div class="flex flex-col gap-3 text-left">
                     <h2 class="text-md capitalize">${task.name}</h2>
@@ -146,16 +169,14 @@ export default {
                 textConfirmationButton: "Simpan",
                 reverseButtons: true,
                 preConfirm: () => {
-                    return [
-                        document.getElementById("file").files[0],
-                    ];
+                    return [document.getElementById("file").files[0]];
                 },
             }).then((input) => {
                 if (input.value[0]) {
                     this.$inertia.post(
-                        route("student.task.store",[this.study.id, task.id]),
+                        route("student.task.store", [task.study.id, task.id]),
                         {
-                            'file': input.value[0],
+                            file: input.value[0],
                         },
                         {
                             onSuccess: (page) => {
@@ -174,7 +195,7 @@ export default {
                                         </li>`
                                     );
                                 }
-    
+
                                 this.$swal(
                                     "Gagal menambah data",
                                     `<ul class="text-red-500 ">

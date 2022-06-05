@@ -1,7 +1,7 @@
 <template>
     <AuthenticatedLayout>
         <div class="m-4">
-            <h2 class="text-xl font-semibold capitalize">
+            <h2 class="text-xl font-semibold capitalize mb-5">
                 Materi {{ studyName }}
             </h2>
             <div
@@ -100,7 +100,6 @@
                             </div>
                             <a
                                 v-else
-                                class="btn btn-primary"
                                 :href="
                                     route('student.module.show', [
                                         studyId,
@@ -109,7 +108,20 @@
                                 "
                                 target="_blank"
                             >
-                                Unduh
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-8 w-8 text-blue-500"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                                    />
+                                </svg>
                             </a>
                             <div class="">
                                 <h3

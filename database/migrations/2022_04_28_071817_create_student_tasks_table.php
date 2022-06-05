@@ -22,6 +22,8 @@ return new class extends Migration
                 ->onUpdate('cascade');
             $table->string('file_path')
                 ->default('');
+            $table->string('file_type')
+                ->nullable();
             $table->tinyInteger('status')
                 ->default(0);
             $table->timestamps();

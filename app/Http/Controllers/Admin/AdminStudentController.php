@@ -9,17 +9,22 @@ use App\Models\School;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
-class SuperAdminStudentController extends Controller
+class AdminStudentController extends Controller
 {
     public function index(Request $request)
     {
         $users = User::select('id', 'name', 'email', 'school_id')
+            ->when(
+                Auth::user()->school_id,
+                function ($query, $schoolId) {
+                    return $query->where('school_id', $schoolId);
+                }
+            )
             ->when($request->search, function($query, $search) {
-                return $query->where('name', 'LIKE', '%'.$search.'%')
-                    ->orWhere('email', 'LIKE', '%'.$search.'%')
-                    ->orWhere('id', $search);
+                return $query->where('email', 'LIKE', '%'.$search.'%');
             })
             ->role('student')
             ->with([

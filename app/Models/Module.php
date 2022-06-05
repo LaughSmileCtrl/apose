@@ -13,6 +13,7 @@ class Module extends Model
     protected $fillable = [
         'name',
         'file_path',
+        'file_type',
     ];
 
     public function study()

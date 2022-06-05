@@ -21,7 +21,7 @@
                     <h3 class="text-md text-gray-500">Materi</h3>
                 </Link>
 
-                <Link :href="route('student.task.index', study.id)" class="grid grid-cols-1 gap-3 place-items-center">
+                <Link :href="route('student.task.show', study.id)" class="grid grid-cols-1 gap-3 place-items-center">
                     <img src="/icons/task.png" class="h-24 w-24" alt="">
                     <h3 class="text-md text-gray-500">Tugas</h3>
                 </Link>

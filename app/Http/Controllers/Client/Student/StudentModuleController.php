@@ -28,6 +28,7 @@ class StudentModuleController extends Controller
             ->where('id', $moduleId)
             ->first();
         
-        return Storage::download($module->file_path, $module->name);
+        $filename = $module->name.'.'.$module->file_type;
+        return Storage::download($module->file_path, $filename);
     }
 }

@@ -3,7 +3,7 @@
         <div class="container mx-auto flex flex-row gap-x-5">
             <SideNav v-if="showSideNav" @close="toggleSideNav" />
             <div class="w-[300px] h-auto bg-white rounded-3xl hidden lg:block">
-                <SideNav :class="sideNavClass" @close="toggleSideNav" />
+                <SideNav :class="sideNavClass" />
             </div>
             <div class="w-full h-auto bg-white rounded-3xl">
                 <!-- <div
@@ -201,7 +201,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="my-8">
+                <div v-if="tasks.length > 0" class="my-8">
                     <div class="grid grid-cols-1 gap-5 mx-4">
                         <h3 class="text-md">Yuk Kerjain Tugas</h3>
                         <div class="px-2">

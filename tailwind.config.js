@@ -40,6 +40,7 @@ module.exports = {
           paddingLeft: theme('spacing.6'),
           textTransform: 'uppercase',
           fontWeight: theme('fontWeight.semibold'),
+          whiteSpace: 'nowrap',
         },
         '.btn.btn-primary': {
           backgroundColor: theme('colors.blue.400'),

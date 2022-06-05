@@ -14,18 +14,32 @@ use Inertia\Inertia;
 
 class StudentTaskController extends Controller
 {
-    public function index($studyId)
+    public function index()
     {
-        $study = Study::find($studyId);
-
-        $tasks = Auth::user()->studentTasks()
-            ->select('id', 'name', 'description', 'deadline')
-            ->whereRelation('study', 'id', $studyId)
+        $tasks = Auth::user()
+            ->studentTasks()
+            ->with('study')
             ->get();
 
         return Inertia::render('Student/ListTask', [
-            'study' => $study,
             'tasks' => $tasks,
+            'study_name' => 'Semua Pelajaran'
+        ]);
+    }
+
+    public function show($studyId)
+    {
+        $study = Study::findOrFail($studyId);
+
+        $tasks = Auth::user()->studentTasks()
+            ->select('id', 'name', 'description', 'deadline', 'study_id')
+            ->whereRelation('study', 'id', $studyId)
+            ->with('study')
+            ->get();
+
+        return Inertia::render('Student/ListTask', [
+            'tasks' => $tasks,
+            'study_name' => $study->name,
         ]);
     }
 
@@ -55,15 +69,5 @@ class StudentTaskController extends Controller
         ]);
     }
 
-    public function show($taskId, $studentId)
-    {
-        $user = User::find($studentId);
-        $task = Task::find($taskId);
-        $userTask = $user->studentTasks()
-            ->wherePivot('task_id', $taskId)->first();
-
-        $filename = 'Tugas '.$task->name.' - '.$user->name;
-
-        return Storage::download($userTask->pivot->file_path, $filename);
-    }
+    
 }

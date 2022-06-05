@@ -192,6 +192,10 @@
 
                     <li class="items-center">
                         <Link
+                            v-if="
+                                $page.props.auth.user.roles[0].name ==
+                                'super-admin'
+                            "
                             :href="route('schools.index')"
                             class="text-xs uppercase py-3 font-bold block"
                             :class="navClass(route().current('schools.index'))"

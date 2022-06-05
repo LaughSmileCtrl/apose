@@ -41,7 +41,7 @@
                                     focus:ring-2
                                     focus:ring-blue-600
                                 "
-                                placeholder="Cari"
+                                placeholder="Cari Email"
                             />
                         </div>
                     </form>
@@ -208,11 +208,7 @@
                                     <span
                                         v-for="role in user.roles"
                                         :key="role"
-                                        :class="[
-                                            role.name == 'student'
-                                                ? 'text-xs font-semibold inline-block py-1 px-2 rounded text-emerald-600 bg-emerald-200 uppercase last:mr-0 mr-1'
-                                                : 'text-xs font-semibold inline-block py-1 px-2 rounded text-indigo-600 bg-indigo-200 uppercase last:mr-0 mr-1',
-                                        ]"
+                                        :class="'whitespace-nowrap text-xs font-semibold inline-block py-1 px-2 rounded uppercase last:mr-0 mr-1 ' + roleColor[role.name]"
                                         v-html="role.name"
                                     />
                                 </td>
@@ -227,7 +223,7 @@
                                     "
                                 >
                                     <div class="flex flex-row gap-2">
-                                        <!-- <button
+                                        <button
                                             @click="editUser(user)"
                                             class="
                                                 text-blue-400
@@ -235,10 +231,14 @@
                                             "
                                         >
                                             Edit
-                                        </button> -->
+                                        </button>
                                         <button
                                             @click="deleteUser(user)"
-                                            class="text-red-400 hover:t ext-red-900"
+                                            class="
+                                                text-red-400
+                                                hover:t
+                                                ext-red-900
+                                            "
                                         >
                                             Hapus
                                         </button>
@@ -270,8 +270,8 @@
             <label>Sekolah</label>
             <select
                 @change="resetSelectClassroom"
-                v-model="user.schoolId"
-                :disabled="selectedUser != null"
+                v-model="selectedUser.school_id"
+                :disabled="selectedUser.id != null"
                 class="col-span-2 rounded-xl px-2 my-1 w-full uppercase"
             >
                 <option
@@ -285,8 +285,8 @@
             <label>Role</label>
             <select
                 @change="resetSelectClassroom"
-                v-model="user.role"
-                :disabled="selectedUser != null"
+                v-model="selectedUser.role"
+                :disabled="selectedUser.id != null"
                 class="col-span-2 rounded-xl px-2 my-1 w-full capitalize"
             >
                 <option
@@ -298,21 +298,21 @@
             </select>
             <label>Nama User</label>
             <input
-                v-model="user.name"
+                v-model="selectedUser.name"
                 type="text"
                 placeholder="Masukkan Nama user"
                 class="col-span-2 rounded-xl px-2 my-1 w-full"
             />
             <label>Email User</label>
             <input
-                v-model="user.email"
+                v-model="selectedUser.email"
                 type="email"
                 placeholder="Masukkan Email"
                 class="col-span-2 rounded-xl px-2 my-1 w-full"
             />
             <label>Pasword</label>
             <input
-                v-model="user.password"
+                v-model="selectedUser.password"
                 type="text"
                 placeholder="Masukkan Password"
                 class="col-span-2 rounded-xl px-2 my-1 w-full"
@@ -330,13 +330,19 @@ export default {
         return {
             searchQuery: "",
             modalStatus: false,
-            selectedUser: null,
-            user: {
+            selectedUser: {
+                id: null,
                 name: null,
                 email: null,
                 password: "password",
-                schoolId: null,
+                school_id: null,
                 role: null,
+            },
+            roleColor: {
+                student: "text-emerald-600 bg-emerald-200",
+                teacher: "text-indigo-600 bg-indigo-200",
+                admin: "text-amber-600 bg-amber-200",
+                'super-admin': "text-red-600 bg-red-200",
             },
         };
     },
@@ -355,38 +361,32 @@ export default {
         },
         showModal() {
             this.modalStatus = true;
-            this.user.name = null;
-            this.user.email = null;
-            this.user.password = "password";
-            this.user.schoolId = null;
-            this.user.role = null;
         },
         closeModal() {
             this.modalStatus = false;
-
-            this.selectedUser = null;
-            this.user.name = null;
-            this.user.email = null;
-            this.user.password = "password";
-            this.user.schoolId = null;
-            this.user.role = null;
+            this.selectedUser = {
+                id: null,
+                name: null,
+                email: null,
+                password: "password",
+                school_id: null,
+                role: null,
+            };
         },
         confirmedModal() {
-            if (this.selectedUser === null) {
+            if (this.selectedUser.id === null) {
                 this.postUser();
             } else {
                 this.updateUser();
             }
         },
-
         postUser() {
             var inputJson = {
-                user_name: this.user.name,
-                role: this.user.role,
-                email: this.user.email,
-                password: this.user.password,
-                school_id: this.user.schoolId,
-                studies_id: this.user.studiesId,
+                name: this.selectedUser.name,
+                role: this.selectedUser.role,
+                email: this.selectedUser.email,
+                password: this.selectedUser.password,
+                school_id: this.selectedUser.school_id,
             };
 
             this.$inertia.post(route("users.store"), inputJson, {
@@ -425,16 +425,22 @@ export default {
             });
         },
         editUser(user) {
-            this.selectedUser = user;
-            // this.schoolSelectedId = user.classroom.school_id
-            // this.classroomSelectedId = user.classroom.id
-            this.userName = user.name;
+            this.selectedUser = {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                password: user.password,
+                school_id: user.school_id,
+                role: user.roles[0].name,
+            };
             this.showModal();
         },
         updateUser() {
             var inputJson = {
-                classroom_id: this.classroomSelectedId,
-                user_name: this.userName,
+                id: this.selectedUser.id,
+                name: this.selectedUser.name,
+                email: this.selectedUser.email,
+                password: this.selectedUser.password,
             };
 
             this.$inertia.put(

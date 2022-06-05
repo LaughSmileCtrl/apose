@@ -27,11 +27,14 @@ class TeacherModuleController extends Controller
     
     public function store($studyId, FileStoreRequest $request)
     {
+        
         $pathFile = $request->file->store('modules');
+        $typeFile = collect(explode('.', $pathFile))->last();
 
         Study::find($studyId)->modules()->create([
             'name' => $request->name,
             'file_path' => $pathFile,
+            'file_type' => $typeFile,
         ]);
 
         return back()->with([
@@ -46,7 +49,8 @@ class TeacherModuleController extends Controller
             ->where('id', $moduleId)
             ->first();
         
-        return Storage::download($module->file_path, $module->name);
+        $filename = $module->name.'.'.$module->file_type;
+        return Storage::download($module->file_path, $filename);
     }
 
 

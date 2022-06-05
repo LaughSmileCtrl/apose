@@ -7,7 +7,7 @@ use App\Models\School;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class SuperAdminSchoolController extends Controller
+class AdminSchoolController extends Controller
 {
     public function index(Request $request)
     {

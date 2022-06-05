@@ -31,6 +31,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         Role::create(['name' => 'student'])->givePermissionTo('modules.view');
         Role::create(['name' => 'teacher'])->givePermissionTo('modules.*','tasks.*');
-        // Role::create(['name' => 'super-admin'])->givePermissionTo('*');
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'super-admin']);
     }
 }

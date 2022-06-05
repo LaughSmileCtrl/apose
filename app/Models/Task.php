@@ -35,6 +35,7 @@ class Task extends Model
     {
         return $this->belongsToMany(User::class, 'student_tasks')
             ->wherePivotIn('status', [-1, 1])
-            ->withPivot('status', 'file_path');
+            ->withPivot('status', 'file_path')
+            ->withTimestamps();
     }
 }

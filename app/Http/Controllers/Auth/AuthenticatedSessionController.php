@@ -44,9 +44,11 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('student.dashboard');
         } else if ($request->user()->hasRole('teacher'))  {
             return redirect()->route('teacher.dashboard');
+        } else if ($request->user()->hasRole('super-admin'))  {
+            return redirect()->route('admin.dashboard');
         }
 
-        // return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**

@@ -37,7 +37,7 @@
                                     focus:ring-2
                                     focus:ring-blue-600
                                 "
-                                placeholder="Cari"
+                                placeholder="Cari Email"
                             />
                         </div>
                     </form>

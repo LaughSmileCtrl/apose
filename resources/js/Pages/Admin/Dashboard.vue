@@ -5,6 +5,8 @@
                 :schoolCount="schoolCount"
                 :classroomCount="classroomCount"
                 :userCount="userCount"
+                :teacherCount="teacherCount"
+                :studentCount="studentCount"
             />
         </template>
     </AdminLayout>
@@ -18,6 +20,12 @@ export default {
         AdminLayout,
         HeaderStats,
     },
-    props: ["schoolCount", "classroomCount", "userCount"],
+    props: [
+        "schoolCount",
+        "classroomCount",
+        "userCount",
+        "teacherCount",
+        "studentCount",
+    ],
 };
 </script>

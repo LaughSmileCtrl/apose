@@ -8,19 +8,24 @@ use App\Models\School;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Spatie\Permission\Models\Role;
 
-class SuperAdminTeacherController extends Controller
+class AdminTeacherController extends Controller
 {
     public function index(Request $request)
     {
         $users = User::select('id', 'name', 'email', 'school_id')
             ->when($request->search, function($query, $search) {
-                return $query->where('name', 'LIKE', '%'.$search.'%')
-                    ->orWhere('email', 'LIKE', '%'.$search.'%')
-                    ->orWhere('id', $search);
+                return $query->where('email', 'LIKE', '%'.$search.'%');
             })
+            ->when(
+                Auth::user()->school_id,
+                function ($query, $schoolId) {
+                    return $query->where('school_id', $schoolId);
+                }
+            )
             ->role('teacher')
             ->with(['teachs:id'])
             ->paginate(50);
