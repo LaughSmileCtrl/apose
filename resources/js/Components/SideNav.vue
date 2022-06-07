@@ -31,7 +31,8 @@
                 :href="[
                     $page.props.auth.user.roles[0].name == 'teacher'
                         ? route('teacher.classroom.index')
-                        : route('student.study.index')]"
+                        : route('student.study.index'),
+                ]"
                 class="flex flex-row gap-2 p-2 my-3 w-full"
             >
                 <svg
@@ -70,6 +71,26 @@
                     />
                 </svg>
                 <h3 class="text-md">Tugas</h3>
+            </Link>
+            <Link
+                :href="route('client.profile')"
+                class="flex flex-row gap-2 p-2 my-3 w-full"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
+                </svg>
+                <h3 class="text-md">Profile</h3>
             </Link>
             <button @click="logout" class="flex flex-row gap-2 p-2 my-3 w-full">
                 <svg

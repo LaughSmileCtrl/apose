@@ -13,7 +13,9 @@
                     md:rounded-none
                 "
             >
-                <h2 class="text-4xl capitalize lg:text-center">Selamat datang</h2>
+                <h2 class="text-4xl capitalize lg:text-center">
+                    Selamat datang
+                </h2>
                 <h2 class="my-4 text-2xl capitalize lg:text-center">
                     aplikasi pangajharan online sumenep
                 </h2>
@@ -73,12 +75,20 @@
                                     class="
                                         form-control
                                         w-full
-                                        border-b-2 border-blue-800
                                     "
                                 >
                                     <input
                                         type="text"
-                                        class="w-full border-0 p-3 outline-none"
+                                        class="
+                                            w-full
+                                            border-b-2
+                                            py-2
+                                            border-0 border-gray-400
+                                            focus:border-b-2
+                                            focus:border-blue-500
+                                            focus:outline-none
+                                            focus:ring-0
+                                        "
                                         placeholder="Email *"
                                         v-model="form.email"
                                     />
@@ -108,7 +118,6 @@
                                         items-end
                                         justify-items-end
                                         gap-2
-                                        border-b-2 border-blue-800
                                     "
                                 >
                                     <input
@@ -117,7 +126,16 @@
                                                 ? 'text'
                                                 : 'password'
                                         "
-                                        class="w-full border-0 p-3 outline-none"
+                                        class="
+                                            w-full
+                                            border-b-2
+                                            py-2
+                                            border-0 border-gray-400
+                                            focus:border-b-2
+                                            focus:border-blue-500
+                                            focus:outline-none
+                                            focus:ring-0
+                                        "
                                         placeholder="Password *"
                                         v-model="form.password"
                                     />
@@ -196,7 +214,7 @@
     </div>
 </template>
 <script>
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 
 export default {
     components: {
@@ -224,8 +242,8 @@ export default {
     },
     computed: {
         hasError() {
-            return Object.keys(this.form.errors).length > 0
-        }
-    }
+            return Object.keys(this.form.errors).length > 0;
+        },
+    },
 };
 </script>

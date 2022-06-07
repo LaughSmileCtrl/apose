@@ -8,13 +8,21 @@ use App\Models\School;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class TeacherDashbordController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
+        
+        if ($user->avatar_path != null) {
+            $user->avatar_path = Storage::url($user->avatar_path);
+        }
+
         $teacher = $request->user();
+
 
         $studies = $teacher->teachs()
             ->limit(7)

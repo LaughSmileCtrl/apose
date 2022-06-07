@@ -54,9 +54,16 @@
                         <div class="flex flex-row items-center">
                             <div class="h-14 w-14 rounded-full">
                                 <img
-                                    class="h-14 w-14"
+                                    v-if="$page.props.auth.user.avatar_path"
+                                    class="h-14 w-14 rounded-full"
+                                    :src="$page.props.auth.user.avatar_path"
+                                    alt=""
+                                />
+                                <img
+                                    v-else
+                                    class="h-14 w-14 rounded-full"
                                     src="/icons/avatar.png"
-                                    alt=""  
+                                    alt=""
                                 />
                             </div>
                             <div class="flex flex-col ml-3">

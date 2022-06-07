@@ -49,9 +49,16 @@
                     </div>
                     <div class="">
                         <div class="flex flex-row items-center">
-                            <div class="h-14 w-14 rounded-full">
+                            <div class="h-14 w-14">
                                 <img
-                                    class="h-14 w-14"
+                                    v-if="$page.props.auth.user.avatar_path"
+                                    class="h-14 w-14 rounded-full"
+                                    :src="$page.props.auth.user.avatar_path.replace('public', 'storage')"
+                                    alt=""
+                                />
+                                <img
+                                    v-else
+                                    class="h-14 w-14 rounded-full"
                                     src="/icons/avatar.png"
                                     alt=""
                                 />

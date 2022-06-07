@@ -23,18 +23,17 @@ class AdminUserController extends Controller
     public function index(Request $request)
     {
         $users = User::select('id', 'name', 'email', 'school_id')
-                ->whereNot(function ($query) {
-                    return $query->where('id', Auth::id());
-                })
-                ->where('school_id', Auth::user()->school_id)
-                ->when($request->search, function ($query, $search) {
-                    return $query->where('email', 'LIKE', '%' . $search . '%');
-                })
-                ->when(Auth::user()->school_id, function ($query, $schoolId) {
-                    return $query->where('school_id', $schoolId);
-                })
-                ->with('roles')
-                ->paginate(50);
+            ->whereNot(function ($query) {
+                return $query->where('id', Auth::id());
+            })
+            ->when($request->search, function ($query, $search) {
+                return $query->where('email', 'LIKE', '%' . $search . '%');
+            })
+            ->when(Auth::user()->school_id, function ($query, $schoolId) {
+                return $query->where('school_id', $schoolId);
+            })
+            ->with('roles')
+            ->paginate(50);
 
         $schools = School::select('id', 'name')
             ->when(
@@ -81,8 +80,13 @@ class AdminUserController extends Controller
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
         ]);
+
+        if ($request->password != null) {
+            $user->update([
+                'password' => Hash::make($request->password)
+            ]);
+        }
 
         return back()->with([
             'message' => $user->name . ' berhasil diubah',

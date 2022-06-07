@@ -16,6 +16,7 @@ use App\Http\Controllers\Client\Teacher\TeacherClassroomController;
 use App\Http\Controllers\Client\Teacher\TeacherConversationController;
 use App\Http\Controllers\Client\Teacher\TeacherModuleController;
 use App\Http\Controllers\Client\Teacher\TeacherTaskController;
+use App\Http\Controllers\ClientProfileController;
 use App\Http\Controllers\ErrorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -122,6 +123,13 @@ Route::name('student.')
             ->name('module.show');
     });
 
+Route::middleware(['auth', 'verified', 'role:teacher|student'])
+    ->group(function() {
+        Route::get('/client/profile', [ClientProfileController::class, 'index'])
+            ->name('client.profile');
+        Route::put('/client/profile', [ClientProfileController::class, 'update'])
+            ->name('client.profile');
+    });
 
 Route::prefix('/admin')
     ->middleware(['auth', 'verified', 'role:super-admin|admin'])

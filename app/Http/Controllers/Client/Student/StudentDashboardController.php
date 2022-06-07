@@ -13,6 +13,11 @@ class StudentDashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+
+        if ($user->avatar_path != null) {
+            $user->avatar_path = Storage::url($user->avatar_path);
+        }
+        
         $classroom = $user->classroom()
             ->select('classrooms.id', 'name', 'school_id')->first();
 
