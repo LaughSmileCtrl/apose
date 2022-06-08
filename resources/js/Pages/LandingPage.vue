@@ -5,14 +5,14 @@
                 <img class="h-14" src="images/logo.png" alt="" />
                 Aplikasi Pangajheren Online Sumenep
             </div>
-            <button @click="toggleSideBar" class="lg:hidden">
+            <button @click="toggleSideBar" class="lg:hidden w-fit h-fit p-3 bg-blue-600 hover:bg-blue-700 rounded-lg">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="h-6 w-6"
+                    class="h-6 w-6 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
-                    stroke-width="2"
+                    stroke-width="3"
                 >
                     <path
                         stroke-linecap="round"
@@ -26,8 +26,15 @@
                     <a href="#beranda" class="uppercase">Beranda</a>
                     <a href="#tentang" class="uppercase">Tentang</a>
                     <a href="#pelayanan" class="uppercase">pelayanan</a>
-                    <Link :href="route('login')" class="btn btn-primary">
+                    <Link
+                        v-if="$page.props.auth.user == null"
+                        :href="route('login')"
+                        class="btn btn-primary"
+                    >
                         Login
+                    </Link>
+                    <Link v-else :href="route('dashboard')" class="uppercase">
+                        Dashboard
                     </Link>
                 </div>
             </div>
@@ -42,8 +49,7 @@
                 class="
                     capitalize
                     leading-normal
-                    text-yellow-500
-                    text-2xl
+                    text-yellow-500 text-2xl
                     lg:text-4xl
                     xl:text-6xl
                 "
@@ -242,6 +248,7 @@
                     pelayanan
                 </a>
                 <Link
+                    v-if="$page.props.auth.user == null"
                     :href="route('login')"
                     class="
                         mt-10
@@ -255,6 +262,20 @@
                     "
                 >
                     login
+                </Link>
+                <Link
+                    v-else
+                    :href="route('dashboard')"
+                    class="
+                        w-full
+                        rounded-lg
+                        p-3
+                        text-left
+                        uppercase
+                        hover:bg-blue-200
+                    "
+                >
+                    Dashboard
                 </Link>
             </div>
         </div>
