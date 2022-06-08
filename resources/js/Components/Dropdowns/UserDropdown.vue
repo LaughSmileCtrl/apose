@@ -27,7 +27,7 @@
                             border-none
                             shadow-lg
                         "
-                        :src="image"
+                        src="/images/team-1-800x800.png"
                     />
                 </span>
             </div>
@@ -74,13 +74,11 @@
 
 <script>
 import { createPopper } from "@popperjs/core";
-import image from "@/assets/img/team-1-800x800.jpg";
 
 export default {
     data() {
         return {
             dropdownPopoverShow: false,
-            image: image,
         };
     },
     methods: {

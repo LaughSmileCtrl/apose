@@ -42,11 +42,12 @@ Route::get('/dashboard', function() {
         return redirect()->route('student.dashboard');
     } else if (Auth::user()->hasRole('teacher')) {
         return redirect()->route('teacher.dashboard');
-    } else if (Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('admin')) {
+    } else if (Auth::user()->hasRole('super-admin') 
+        || Auth::user()->hasRole('admin')) {
         return redirect()->route('admin.dashboard');
     } 
     abort(403);
-})->middleware(['auth']);
+})->name('dashboard')->middleware(['auth']);
 
 Route::name('teacher.')
     ->prefix('/teacher')

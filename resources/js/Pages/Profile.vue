@@ -136,6 +136,7 @@
                                 focus:ring-0
                             "
                         />
+                        <p class="text-sm text-red-500"></p>
                     </div>
                     <div class="grid">
                         <label for="" class="text-sm text-gray-400"

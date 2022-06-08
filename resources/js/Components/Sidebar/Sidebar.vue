@@ -55,7 +55,7 @@
             </button>
             <!-- Brand -->
             <div class="flex flex-col gap-2 p-1 md:pb-2 mr-0">
-                <ApplicationLogo />
+                <ApplicationLogo class="hidden lg:block" />
                 <h2
                     class="
                         text-center text-gray-600 text-xs
@@ -67,10 +67,7 @@
                 </h2>
             </div>
             <!-- User -->
-            <ul class="md:hidden items-center flex flex-wrap list-none">
-                <li class="inline-block relative">
-                    <notification-dropdown />
-                </li>
+            <ul class="md:hidden items-center flex flex-wrap list-none">    
                 <li class="inline-block relative">
                     <user-dropdown />
                 </li>
