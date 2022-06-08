@@ -13,8 +13,10 @@
                     md:rounded-none
                 "
             >
-                <img src="/images/logo_putih.png" />
-                <h2 class="my-4 text-2xl capitalize lg:text-center">
+                <Link :href="route('home')">
+                    <img src="/images/logo_putih.png" class="h-20 lg:mx-auto" />
+                </Link>
+                <h2 class="text-2xl capitalize lg:text-center">
                     aplikasi pangajharan online sumenep
                 </h2>
             </div>

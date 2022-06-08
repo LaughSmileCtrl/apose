@@ -23,9 +23,12 @@
                 p-6
             "
         >
-            <h2 class="text-xl text-center font-light capitalize w-fu">
-                Aplikasi Pangajharan Online Sumenep
-            </h2>
+            <Link :href="route('home')">
+                <img src="/images/logo.png" class="h-20 lg:mx-auto" />
+                <h2 class="text-md text-center font-light capitalize w-fu">
+                    Aplikasi Pangajharan Online Sumenep
+                </h2>
+            </Link>
             <hr class="h-[2px] bg-blue-100 mt-4 mb-6 mx-3" />
             <Link
                 :href="[

@@ -35,7 +35,7 @@ use Inertia\Inertia;
 
 Route::get('/', function () {
     return Inertia::render('LandingPage');
-});
+})->name('home');
 
 Route::get('/dashboard', function() {
     if (Auth::user()->hasRole('student')) {

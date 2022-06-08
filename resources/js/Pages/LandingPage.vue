@@ -1,11 +1,11 @@
 <template>
-    <div id="beranda" class="container mx-auto w-screen px-8 pt-6 bg-white">
-        <div class="flex w-full flex-row justify-between text-blue-500">
+    <div id="beranda" class="container relative mx-auto w-screen h-[90vh] px-8 pt-6">
+        <div class="flex w-full flex-row justify-between text-blue-500 bg-white z-50">
             <div class="text-center text-xs">
                 <img class="h-14" src="images/logo.png" alt="" />
                 Aplikasi Pangajheren Online Sumenep
             </div>
-            <button @click="toggleSideBar" class="lg:hidden w-fit h-fit p-3 bg-blue-600 hover:bg-blue-700 rounded-lg">
+            <button @click="toggleSideBar" class="lg:hidden w-fit h-fit p-3 bg-blue-500 hover:bg-blue-600 rounded-lg">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-6 w-6 text-white"
@@ -39,9 +39,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container mx-auto relative px-8">
-        <div class="absolute top-1/4 md:top-1/3">
+        <div class="absolute top-1/2 md:top-1/3">
             <h2 class="mb-1 text-blue-400 text-xl lg:text-3xl">
                 Mempelajari Hal Baru
             </h2>
@@ -52,19 +50,20 @@
                     text-yellow-500 text-2xl
                     lg:text-4xl
                     xl:text-6xl
+                    font-bold
                 "
             >
                 Setiap hari, Setiap Waktu
             </h1>
         </div>
-        <img class="w-screen" src="images/landing.png" alt="" />
+        <img class="absolute bottom-0 right-0" src="images/landing.png" alt="" />
     </div>
     <div
         id="tentang"
         class="
             container
             mx-auto
-            my-14
+            my-16
             grid grid-cols-1
             place-items-center
             gap-8
