@@ -49,6 +49,8 @@ class AdminStudentController extends Controller
     {
         $user = User::find($user);
 
+        $user->studentTasks()->delete();
+
         ClassroomStudent::updateOrCreate(
             ['user_id' => $user->id],
             ['classroom_id' => $request->classroom]

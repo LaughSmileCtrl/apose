@@ -53,6 +53,8 @@ class TeacherTaskController extends Controller
 
     public function show($studyId, $taskId)
     {
+        $numberStudent = Study::findOrfail($studyId)
+            ->classroom->students->count();
         $task = Task::find($taskId);
 
         $students = $task->submitedStudents()
@@ -62,6 +64,7 @@ class TeacherTaskController extends Controller
         return Inertia::render('Teacher/ListSubmittedStudent', [
             'task' => $task,
             'students' => $students,
+            'numberStudent' => $numberStudent,
         ]);
     }
 

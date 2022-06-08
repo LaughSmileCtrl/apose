@@ -22,6 +22,7 @@
                         "
                     />
                     <p v-html="'Total Pengumpulan: ' + students.length"/>
+                    <p v-html="'Total Siswa: ' + numberStudent"/>
                     <div class="mt-8">
                         <div class="grid grid-cols-1 gap-5">
                             <div
@@ -75,7 +76,7 @@
                                                 day: 'numeric',
                                                 hour: 'numeric',
                                                 minute: 'numeric',
-                                            }) <
+                                            }) >
                                             new Date(
                                                 task.deadline
                                             ).toLocaleString('ID-id', {
@@ -138,7 +139,7 @@ export default {
             studyId: route().params.studyId,
         };
     },
-    props: ["students", "task"],
+    props: ["students", "task", "numberStudent"],
     methods: {},
 };
 </script>

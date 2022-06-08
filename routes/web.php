@@ -34,7 +34,7 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    // return Inertia::render('Welcome');
+    return Inertia::render('LandingPage');
 });
 
 Route::get('/dashboard', function() {
