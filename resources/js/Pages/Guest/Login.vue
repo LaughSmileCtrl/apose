@@ -13,9 +13,7 @@
                     md:rounded-none
                 "
             >
-                <h2 class="text-4xl capitalize lg:text-center">
-                    Selamat datang
-                </h2>
+                <img src="/images/logo_putih.png" />
                 <h2 class="my-4 text-2xl capitalize lg:text-center">
                     aplikasi pangajharan online sumenep
                 </h2>
